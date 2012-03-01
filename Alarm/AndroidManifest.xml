@@ -13,6 +13,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="AlarmsActivity"></activity>
+        <activity android:name="PlacesActivity"></activity>
+        <activity android:name="StatusActivity"></activity>
 
     </application>
 </manifest>
