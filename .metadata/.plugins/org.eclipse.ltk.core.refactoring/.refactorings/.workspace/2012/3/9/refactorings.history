@@ -1,4 +1,3 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Move 0 packages to &apos;Alarm/gen&apos;&#x0D;&#x0A;- Destination element: &apos;Alarm/gen&apos;&#x0D;&#x0A;- Update references to refactored element" description="Move packages" destination="=Alarm/gen" flags="589830" fragments="0" id="org.eclipse.jdt.ui.move" policy="org.eclipse.jdt.ui.movePackages" stamp="1330562668537" version="1.0"/>
+<session version="1.0">&#x0A;<refactoring comment="Move 0 packages to &apos;Alarm/gen&apos;&#x0D;&#x0A;- Destination element: &apos;Alarm/gen&apos;&#x0D;&#x0A;- Update references to refactored element" description="Move packages" destination="=Alarm/gen" flags="589830" fragments="0" id="org.eclipse.jdt.ui.move" policy="org.eclipse.jdt.ui.movePackages" stamp="1330562668537" version="1.0"/>&#x0A;<refactoring comment="Delete resource &apos;SmartAlarm&apos;" deleteContents="false" description="Delete resource &apos;SmartAlarm&apos;" element1="/SmartAlarm" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1330574255343"/>
 </session>
