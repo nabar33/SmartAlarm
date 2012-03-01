@@ -1,9 +1,9 @@
 package cse.usf.edu.alarm;
 
-import android.app.Activity;
+import android.app.TabActivity;
 import android.os.Bundle;
 
-public class SmartAlarmActivity extends Activity {
+public class SmartAlarmActivity extends TabActivity {
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
