@@ -6,7 +6,8 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.TabHost;
 
-public class SmartAlarmActivity extends TabActivity {
+public class SmartAlarmActivity extends TabActivity 
+{
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -23,25 +24,23 @@ public class SmartAlarmActivity extends TabActivity {
 
         // Initialize a TabSpec for each tab and add it to the TabHost
         spec = tabHost.newTabSpec("status").setIndicator("Status",
-                          res.getDrawable(R.drawable.ic_tab_artists))
+                          res.getDrawable(R.drawable.tab_alarms))
                       .setContent(intent);
         tabHost.addTab(spec);
 
         // Do the same for the other tabs
         intent = new Intent().setClass(this, AlarmsActivity.class);
         spec = tabHost.newTabSpec("alarms").setIndicator("Alarms",
-                          res.getDrawable(R.drawable.ic_tab_albums))
+                          res.getDrawable(R.drawable.tab_alarms))
                       .setContent(intent);
         tabHost.addTab(spec);
 
         intent = new Intent().setClass(this, PlacesActivity.class);
         spec = tabHost.newTabSpec("places").setIndicator("Places",
-                          res.getDrawable(R.drawable.ic_tab_songs))
+                          res.getDrawable(R.drawable.tab_alarms))
                       .setContent(intent);
         tabHost.addTab(spec);
 
         tabHost.setCurrentTab(2);
-    }
-        
     }
 }
