@@ -19,6 +19,8 @@
         <activity android:name="AlarmsActivity"></activity>
         <activity android:name="PlacesActivity"></activity>
         <activity android:name="StatusActivity"></activity>
-
+        <activity android:name="AddAlarmActivity"></activity>
+		<activity android:name="AddPlaceActivity"></activity>
+		
     </application>
 </manifest>
