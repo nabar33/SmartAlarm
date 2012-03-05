@@ -3,3 +3,4 @@
 
 # Ignore compiled code #
 *.dex
+*/R.java

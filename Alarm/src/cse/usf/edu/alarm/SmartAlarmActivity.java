@@ -24,20 +24,20 @@ public class SmartAlarmActivity extends TabActivity
 
         // Initialize a TabSpec for each tab and add it to the TabHost
         spec = tabHost.newTabSpec("status").setIndicator("Status",
-                          res.getDrawable(R.drawable.tab_alarms))
+                          res.getDrawable(R.drawable.status_tab))
                       .setContent(intent);
         tabHost.addTab(spec);
 
         // Do the same for the other tabs
         intent = new Intent().setClass(this, AlarmsActivity.class);
         spec = tabHost.newTabSpec("alarms").setIndicator("Alarms",
-                          res.getDrawable(R.drawable.tab_alarms))
+                          res.getDrawable(R.drawable.alarms_tab))
                       .setContent(intent);
         tabHost.addTab(spec);
 
         intent = new Intent().setClass(this, PlacesActivity.class);
         spec = tabHost.newTabSpec("places").setIndicator("Places",
-                          res.getDrawable(R.drawable.tab_alarms))
+                          res.getDrawable(R.drawable.places_tab))
                       .setContent(intent);
         tabHost.addTab(spec);
 
