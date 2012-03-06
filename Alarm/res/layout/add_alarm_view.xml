@@ -128,7 +128,7 @@
             android:layout_height="wrap_content"
             android:text="Apply this alarm to entire week"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_above="@+id/apply_button"
+            android:layout_below="@+id/Minute"
             android:layout_centerHorizontal="true" />
         
         <Button 
@@ -136,8 +136,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Create Alarm"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_alignParentBottom="true"
+	        android:textAppearance="?android:attr/textAppearanceLarge"
+			android:layout_below="@+id/alarm_everyday_checkbox"
             android:onClick="addAlarm" />
         
     </RelativeLayout>
