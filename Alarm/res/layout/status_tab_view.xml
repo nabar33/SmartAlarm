@@ -12,7 +12,7 @@
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
         android:src="@drawable/clock_face"
-        android:layout_above="@id/time_to_next" />
+        android:layout_above="@+id/time_to_next" />
 
     <TextView
         android:id="@+id/time_to_next"
