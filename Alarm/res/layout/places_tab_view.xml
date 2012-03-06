@@ -13,12 +13,13 @@
         android:scaleType="fitCenter"
         android:src="@drawable/googlemap" />  
 
+    
     <Button
         android:id="@+id/add_location"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="@string/add_location"
+        android:text="Add Location"
         android:layout_alignParentBottom="true"
         android:onClick="AddLocation" >
         </Button>

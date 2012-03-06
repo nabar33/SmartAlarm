@@ -2,5 +2,5 @@
 <resources>
     <string name="hello">Hello World, SmartAlarmActivity!</string>
     <string name="app_name">SmartAlarm</string>
-    <string name="add_location">Add Location</string>
+    
 </resources>
