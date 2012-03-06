@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+  	xmlns:android="http://schemas.android.com/apk/res/android"
+  	android:layout_width="match_parent"
+  	android:layout_height="match_parent">
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+        
+        <TextView 
+            android:id="@+id/set_destination_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:text="Where are you going?"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+             />"
+        
+        <TextView 
+            android:id="@+id/street"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:text="Street: "
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/set_destination_text"
+            android:paddingTop="15dip" />
+        
+        <EditText
+            android:layout_toRightOf="@+id/street"
+            android:layout_alignTop="@+id/street"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true" />
+        
+        <TextView 
+            android:id="@+id/city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:text="City: "
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/street"
+            android:paddingTop="15dip" />
+        
+        <EditText
+            android:layout_toRightOf="@+id/city"
+            android:layout_alignTop="@+id/city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true" />
+        
+        <TextView 
+            android:id="@+id/state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:text="State: "
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/city"
+            android:paddingTop="15dip" />
+        
+        <EditText
+            android:layout_toRightOf="@+id/state"
+            android:layout_alignTop="@+id/state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true" />
+        
+        <TextView 
+            android:id="@+id/zip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:text="Zip Code: "
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/state"
+            android:paddingTop="15dip" />
+        
+        <EditText
+            android:layout_toRightOf="@+id/zip"
+            android:layout_alignTop="@+id/zip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true" />
+        
+        <TextView
+            android:id="@+id/your_location_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Where are you coming from?"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_below="@+id/zip" />
+            
+        <CheckBox
+            android:id="@+id/use_gps_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Use current location(GPS)"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_below="@+id/your_location_text"
+            android:layout_centerHorizontal="true" />
+        
+        
+        
+        <TextView 
+            android:id="@+id/start_street"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:text="Street: "
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/use_gps_checkbox"
+            android:paddingTop="15dip" />
+        
+        <EditText
+            android:layout_toRightOf="@+id/start_street"
+            android:layout_alignTop="@+id/start_street"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true" />
+        
+        <TextView 
+            android:id="@+id/start_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:text="City: "
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/start_street"
+            android:paddingTop="15dip" />
+        
+        <EditText
+            android:layout_toRightOf="@+id/start_city"
+            android:layout_alignTop="@+id/start_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true" />
+        
+        <TextView 
+            android:id="@+id/start_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:text="State: "
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/start_city"
+            android:paddingTop="15dip" />
+        
+        <EditText
+            android:layout_toRightOf="@+id/start_state"
+            android:layout_alignTop="@+id/start_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true" />
+        
+        <TextView 
+            android:id="@+id/start_zip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:text="Zip Code: "
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/start_state"
+            android:paddingTop="15dip" />
+        
+        <EditText
+            android:layout_toRightOf="@+id/start_zip"
+            android:layout_alignTop="@+id/start_zip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true" />
+        
+        <Button 
+            android:id="@+id/create_route"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Create Route"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_below="@+id/start_zip" />
+        
+        
+        
+    </RelativeLayout>
+</ScrollView>

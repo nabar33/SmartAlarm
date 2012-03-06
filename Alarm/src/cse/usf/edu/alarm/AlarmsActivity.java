@@ -17,8 +17,7 @@ public class AlarmsActivity extends Activity {
         ListView lview = (ListView) findViewById(R.id.weekdays);
         String[] week_days = new String[] {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
         
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, 
-        									R.layout.row_entry, R.id.day, week_days);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.row_entry, R.id.day, week_days);
         lview.setAdapter(adapter);
     }
     

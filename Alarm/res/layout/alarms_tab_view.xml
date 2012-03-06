@@ -4,17 +4,20 @@
   	android:orientation="vertical"
   	android:layout_width="match_parent"
   	android:layout_height="match_parent">
-  
-  	<ListView 
-  		android:id="@+id/weekdays"
-  		android:layout_height="fill_parent"
-  		android:layout_width="fill_parent"
-  		android:layout_above="@+id/apply" />
     
   	<Button 
   	    android:id="@+id/apply"
  		android:layout_height="wrap_content"
  		android:layout_width="fill_parent"
- 		android:text="Give it to me baby"
+ 		android:text="Apply"
  		android:layout_alignParentBottom="true" />
+
+  	<ListView
+  	    android:id="@+id/weekdays"
+  	    android:layout_width="fill_parent"
+  	    android:layout_height="fill_parent"
+  	    android:layout_alignParentLeft="true"
+  	    android:layout_alignParentTop="true" 
+  	    android:layout_above="@+id/apply" />
+
 </RelativeLayout>
