@@ -9,7 +9,7 @@
   	    android:id="@+id/apply"
  		android:layout_height="wrap_content"
  		android:layout_width="fill_parent"
- 		android:text="Give it to me baby"
+ 		android:text="Apply"
  		android:layout_alignParentBottom="true" />
 
   	<ListView
