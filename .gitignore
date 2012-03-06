@@ -4,3 +4,5 @@
 # Ignore compiled code #
 *.dex
 */R.java
+
+./Alarm/bin/*
