@@ -2,6 +2,7 @@ package cse.usf.edu.alarm;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -19,5 +20,10 @@ public class AlarmsActivity extends Activity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, 
         									R.layout.row_entry, R.id.day, week_days);
         lview.setAdapter(adapter);
+    }
+    
+    public void AddAlarm(View view)
+    {
+    	
     }
 }
