@@ -10,9 +10,7 @@ public class PlacesActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        TextView textview = new TextView(this);
-        textview.setText("This is the Places tab!");
        
-        setContentView(textview);
+        setContentView(R.layout.places_tab_view);
     }
 }

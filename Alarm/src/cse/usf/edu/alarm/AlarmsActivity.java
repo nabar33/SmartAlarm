@@ -10,9 +10,6 @@ public class AlarmsActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        TextView textview = new TextView(this);
-        textview.setText("This is the Alarms tab!");
-       
-        setContentView(textview);
+        setContentView(R.layout.alarms_tab_view);
     }
 }

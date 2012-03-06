@@ -9,9 +9,6 @@ public class StatusActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        TextView textview = new TextView(this);
-        textview.setText("This is the Status tab!");
-        setContentView(textview);
+        setContentView(R.layout.status_tab_view);
     }
 }
