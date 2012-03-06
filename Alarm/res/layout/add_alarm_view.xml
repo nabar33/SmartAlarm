@@ -137,7 +137,8 @@
             android:layout_height="wrap_content"
             android:text="Create Alarm"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_alignParentBottom="true" />
+            android:layout_alignParentBottom="true"
+            android:onClick="addAlarm" />
         
     </RelativeLayout>
 

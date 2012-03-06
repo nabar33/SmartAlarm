@@ -177,7 +177,8 @@
             android:layout_height="wrap_content"
             android:text="Create Route"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_below="@+id/start_zip" />
+            android:layout_below="@+id/start_zip"
+            android:onClick="addLocation" />
         
         
         

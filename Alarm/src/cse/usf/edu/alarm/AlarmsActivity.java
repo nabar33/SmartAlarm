@@ -24,7 +24,7 @@ public class AlarmsActivity extends Activity {
         lview.setAdapter(adapter);
     }
     
-    public void AddAlarm(View view)
+    public void startAddAlarmActivity(View view)
     {
     	TextView day = (TextView)((View) view.getParent()).findViewById(R.id.day);
     		

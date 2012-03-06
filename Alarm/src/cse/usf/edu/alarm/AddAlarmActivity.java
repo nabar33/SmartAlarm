@@ -2,6 +2,7 @@ package cse.usf.edu.alarm;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 public class AddAlarmActivity extends Activity {
@@ -22,4 +23,9 @@ public class AddAlarmActivity extends Activity {
         	day_label.setText(day_string);
         }
     }
+	
+	public void addAlarm(View view)
+	{
+		finish();
+	}
 }
