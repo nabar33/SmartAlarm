@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
   	xmlns:android="http://schemas.android.com/apk/res/android"
   	android:orientation="vertical"
   	android:layout_width="match_parent"
@@ -9,6 +9,12 @@
   		android:id="@+id/weekdays"
   		android:layout_height="fill_parent"
   		android:layout_width="fill_parent"
-  	/>
+  		android:layout_above="@+id/apply" />
     
-</LinearLayout>
+  	<Button 
+  	    android:id="@+id/apply"
+ 		android:layout_height="wrap_content"
+ 		android:layout_width="fill_parent"
+ 		android:text="Give it to me baby"
+ 		android:layout_alignParentBottom="true" />
+</RelativeLayout>
