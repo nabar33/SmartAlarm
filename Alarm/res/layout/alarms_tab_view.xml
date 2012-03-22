@@ -1,23 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-  	xmlns:android="http://schemas.android.com/apk/res/android"
-  	android:orientation="vertical"
-  	android:layout_width="match_parent"
-  	android:layout_height="match_parent">
-    
-  	<Button 
-  	    android:id="@+id/apply"
- 		android:layout_height="wrap_content"
- 		android:layout_width="fill_parent"
- 		android:text="Apply"
- 		android:layout_alignParentBottom="true" />
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-  	<ListView
-  	    android:id="@+id/weekdays"
-  	    android:layout_width="fill_parent"
-  	    android:layout_height="fill_parent"
-  	    android:layout_alignParentLeft="true"
-  	    android:layout_alignParentTop="true" 
-  	    android:layout_above="@+id/apply" />
+    <RelativeLayout
+        android:id="@+id/scrollything"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/day_label"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:text="Day"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+        
+        <Spinner
+            android:id="@+id/day_choice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/day_label" />
+
+        <TextView
+            android:id="@+id/dest_intro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Where are you going?"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_below="@+id/day_choice" />
+
+        <Spinner
+            android:id="@+id/dest_picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dest_intro" />
+
+        <TextView
+            android:id="@+id/destination_time_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="What time do you need to be there?"
+            android:textAppearance="?android:attr/textAppearanceMedium" 
+            android:layout_below="@+id/dest_picker"/>
+
+        <TimePicker
+            android:id="@+id/destination_time_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/destination_time_text"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:id="@+id/ready_time_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="How long does it take you to get ready?"
+            android:textAppearance="?android:attr/textAppearanceMedium" 
+            android:layout_below="@+id/destination_time_picker" />
+        
+        <EditText
+            android:id="@+id/Hour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/ready_time_text"
+            android:layout_toLeftOf="@+id/Center"
+            android:inputType="number"
+            android:text="Hour" />
+
+        <EditText
+            android:id="@+id/Center"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ready_time_text"
+            android:layout_centerHorizontal="true" />
+
+        <EditText
+            android:id="@+id/Minute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/ready_time_text"
+            android:layout_toRightOf="@+id/Center"
+            android:inputType="number"
+            android:text="Minute" />
+
+        <CheckBox
+            android:id="@+id/alarm_everyday_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/Minute"
+            android:layout_centerHorizontal="true"
+            android:text="Apply this alarm to entire week"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        
+        <LinearLayout 
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/alarm_everyday_checkbox">        
+            
+            <Button
+            	android:id="@+id/apply_button"
+            	android:layout_width="fill_parent"
+            	android:layout_height="fill_parent"
+            	android:layout_weight="0.5"
+            	android:onClick="addAlarm"
+            	android:text="Apply Changes"
+            	android:textAppearance="?android:attr/textAppearanceLarge" 
+            	/>
+            
+            <Button
+            	android:id="@+id/delete_button"
+            	android:layout_width="fill_parent"
+            	android:layout_height="fill_parent"
+            	android:layout_weight="0.5"
+            	android:onClick="deleteAlarm"
+            	android:text="Delete Alarm"
+            	android:textAppearance="?android:attr/textAppearanceLarge" 
+            	/>
+            
+        </LinearLayout>
+        
+    </RelativeLayout>
+
+</ScrollView>

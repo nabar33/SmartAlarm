@@ -9,9 +9,9 @@
          android:id="@+id/mapView"
          android:layout_width="fill_parent"
          android:layout_height="fill_parent"
-         android:apiKey="006UOKgE9GtMsgtu2FY97GQ89oPRhuuxBbE998A"
          android:clickable="true"
-         android:enabled="true" />
+         android:enabled="true"
+         android:apiKey="006UOKgE9GtMsgtu2FY97GQ89oPRhuuxBbE998A" />
  
      <LinearLayout android:id="@+id/zoom" 
         android:layout_width="wrap_content" 
