@@ -35,7 +35,7 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
         myAlarmDB.open();
         
         // Temporary
-        myAlarmDB.createAlarm("Wednesday", "null!", 90, 1530);
+        myAlarmDB.createAlarm("Wednesday", "0", 90, 1530);
         
         // Populate Alarm spinner
         Spinner spinner = (Spinner) findViewById(R.id.day_choice);
@@ -55,21 +55,25 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     	{
     		Cursor alarmData = myAlarmDB.getAlarm(selectedDay);
     		
-    		// Set Time Picker
-    		TimePicker timeSetter = (TimePicker) findViewById( R.id.destination_time_picker );
-    	    atime = alarmData.getInt(2);
-    		timeSetter.setCurrentHour(atime / 100);
-    		timeSetter.setCurrentMinute(atime % 100);
-    		
-    		// Set prep time fields
-    		// hour
-    		EditText ted = (EditText) findViewById(R.id.Hour);
-    		atime = alarmData.getInt(3);
-    		ted.setText(Integer.toString(atime / 60));
-    		// minute
-    		ted = (EditText) findViewById(R.id.Minute);
-    	    ted.setText(Integer.toString(atime % 60));
-    		
+    		if (alarmData.getCount() > 3)
+    		{
+    			// Set Time Picker
+    			TimePicker timeSetter = (TimePicker) findViewById( R.id.destination_time_picker );
+    			atime = alarmData.getInt(4);
+    			timeSetter.setCurrentHour(atime / 100);
+    			timeSetter.setCurrentMinute(atime % 100);
+
+    			// Set prep time fields
+    			// hour
+    			EditText ted = (EditText) findViewById(R.id.Hour);
+    			atime = alarmData.getInt(3);
+    			ted.setText(Integer.toString(atime / 60));
+    			// minute
+    			ted = (EditText) findViewById(R.id.Minute);
+    			ted.setText(Integer.toString(atime % 60));
+    		}
+    		else
+    			Log.d("WTF", "HUH?");
     	}
     	catch (SQLException squeak)
     	{

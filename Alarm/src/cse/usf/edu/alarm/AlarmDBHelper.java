@@ -9,19 +9,19 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
 	public static final int DB_VERSION = 1;
 	
 	private static final String CREATE_ALARMS_TABLE = 
-    		"create table alarms(" +
-    		"_id integer primary key autoincrement, " +
-    		"week_day text not null, " +
-    	    "route_id text not null, " +
-    		"prep_time integer not null, " +
-    	    "alarm_time integer not null)";
+    		"CREATE TABLE alarms(" +
+    		"_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+    		"week_day TEXT NOT NULL, " +
+    	    "route_id INTEGER NOT NULL, " +
+    		"prep_time INTEGER NOT NULL, " +
+    	    "alarm_time INTEGER NOT NULL)";
 	
 	private static final String CREATE_ROUTES_TABLE = 
-			"create table routes(" +
-			"_id integer primary key autoincrement, " +
-			"place_name text not null, " +
-			"end_address text not null, " +
-			"from_address text not null)";
+			"CREATE TABLE routes(" +
+			"_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+			"place_name TEXT NOT NULL, " +
+			"end_address TEXT NOT NULL, " +
+			"from_address TEXT NOT NULL)";
 	
 	public AlarmDBHelper(Context context)
 	{
@@ -32,8 +32,9 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(CREATE_ALARMS_TABLE);
 		db.execSQL(CREATE_ROUTES_TABLE);
-		
-		//db.execSQL("");
+		//for (int i = 0; i < 7; i++)
+		//	db.execSQL("INSERT INTO alarms (week_day, route_id, prep_time, alarm_time)" +
+		//			   "VALUES (" + AlarmsActivity.WEEK_DAYS[i] + ",0,0,0)");
 	}
 
 	@Override
