@@ -11,6 +11,7 @@
          android:layout_height="fill_parent"
          android:clickable="true"
          android:enabled="true"
+         android:layout_above="@+id/add_location"
          android:apiKey="006UOKgE9GtMsgtu2FY97GQ89oPRhuuxBbE998A" />
  
      <LinearLayout android:id="@+id/zoom" 

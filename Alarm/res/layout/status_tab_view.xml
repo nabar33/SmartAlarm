@@ -4,23 +4,31 @@
     android:layout_height="fill_parent"
     android:layout_alignParentTop="true"
     android:orientation="vertical" >
-
+    <!-- 
     <ImageView
         android:id="@+id/clock"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_above="@+id/time_to_next"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        android:src="@drawable/clock_face"
-        android:layout_above="@+id/time_to_next" />
+        android:src="@drawable/clock_face" />
+        
+        -->
 
     <TextView
         android:id="@+id/time_to_next"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:gravity="center_horizontal"
         android:text="--Time Until--"
-        android:layout_alignParentBottom="true"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <AnalogClock
+        android:id="@+id/analogClock1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/time_to_next" />
 
 </RelativeLayout>
