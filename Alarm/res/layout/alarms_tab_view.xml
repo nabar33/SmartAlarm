@@ -109,7 +109,7 @@
             	android:layout_height="fill_parent"
             	android:layout_weight="0.5"
             	android:onClick="addAlarm"
-            	android:text="Apply Changes"
+            	android:text="Save Alarm"
             	android:textAppearance="?android:attr/textAppearanceLarge" 
             	/>
             

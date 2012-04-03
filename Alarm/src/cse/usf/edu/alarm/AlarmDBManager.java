@@ -55,7 +55,12 @@ public class AlarmDBManager
 	
 	public boolean deleteAlarm(String day)
 	{
-		return database.delete("alarms", "week_day=" + day, null) > 0;
+		return database.delete("alarms", "week_day=\"" + day + "\"", null) > 0;
+	}
+	
+	public boolean deleteAllAlarms()
+	{
+		return database.delete("alarms", null, null) > 0;
 	}
 
 	public Cursor getAlarm(long alarmId) throws SQLException
@@ -69,23 +74,10 @@ public class AlarmDBManager
 	
 	public Cursor getAlarm(String day) throws SQLException
 	{
-		Cursor mCursor = database.query("alarms", null, 
+		Cursor mCursor = database.query(true, "alarms", null, 
 						"week_day=\"" + day + "\"", null, null, null, null, null);
 		if (mCursor != null)
 			mCursor.moveToFirst();
 		return mCursor;
 	}
-	
-	/*public boolean checkForAlarm(String day)
-	{
-		try
-		{
-			if database.query("alarms", new String[]{"_id"}, "week_day=\"" + day +"\"",
-								null, null, null, null, null);
-		}
-		catch (SQLException squeak)
-		{
-			
-		}
-	}*/
 }
