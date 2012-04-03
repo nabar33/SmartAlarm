@@ -30,6 +30,7 @@
         <activity
             android:name="AddPlaceActivity"
             android:theme="@android:style/Theme.NoTitleBar" />
+        <service android:name="AlarmService"></service>
         
     </application>
     
