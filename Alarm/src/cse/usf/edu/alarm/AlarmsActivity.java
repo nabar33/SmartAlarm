@@ -76,6 +76,7 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     		{
     			clearAlarmFields();
     		}
+    		alarmData.close();
     	}
     	catch (SQLException squeak)
     	{
@@ -162,6 +163,7 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     				id = alarmData.getLong(0);
     			else
     				id = -1;
+    			alarmData.close();
     		}
     		catch (SQLException squeak)
     		{

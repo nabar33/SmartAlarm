@@ -25,8 +25,9 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/set_destination_text"
-            android:paddingTop="15dip" />
-        
+            android:paddingTop="15dip"
+            android:gravity="left" />
+                
         <EditText
             android:layout_toRightOf="@+id/street"
             android:layout_alignTop="@+id/street"
@@ -174,11 +175,22 @@
         
         <Button 
             android:id="@+id/create_route"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Create Route"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_below="@+id/start_zip"
+            android:layout_alignParentLeft="true"
+            android:onClick="addLocation" />
+        
+        <Button 
+            android:id="@+id/delete_route"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete Route"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_below="@+id/start_zip"
+            android:layout_alignParentRight="true"
             android:onClick="addLocation" />
         
         
