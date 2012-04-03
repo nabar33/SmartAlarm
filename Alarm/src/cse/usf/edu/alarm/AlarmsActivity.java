@@ -76,6 +76,7 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     		{
     			clearAlarmFields();
     		}
+    		alarmData.close();
     	}
     	catch (SQLException squeak)
     	{
@@ -84,6 +85,11 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     	catch (CursorIndexOutOfBoundsException cioobe)
     	{
     		clearAlarmFields();
+    	}
+    	catch (IllegalStateException ise)
+    	{ // database is most likely not open
+    		myAlarmDB.open();
+    		populateAlarmFields(selectedDay); // this is dangerous
     	}
     }
     
@@ -94,9 +100,9 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     	timeSetter.setCurrentMinute(0);
     	
     	EditText ted = (EditText) findViewById(R.id.Hour);
-		ted.setText("0");
+		ted.setText("Hour");
 		ted = (EditText) findViewById(R.id.Minute);
-		ted.setText("0");
+		ted.setText("Minute");
 		
 		CheckBox checky = (CheckBox) findViewById(R.id.alarm_everyday_checkbox);
 		checky.setChecked(false);
@@ -157,6 +163,7 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     				id = alarmData.getLong(0);
     			else
     				id = -1;
+    			alarmData.close();
     		}
     		catch (SQLException squeak)
     		{
@@ -166,6 +173,12 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     		catch (CursorIndexOutOfBoundsException cioobe)
     		{
     			id = -1;
+    		}
+    		catch (IllegalStateException ise)
+    		{
+    			myAlarmDB.open();
+    			addAlarm(v);
+    			return;
     		}
 
     		if (id >= 0) // then update alarm
@@ -189,6 +202,9 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     	
     	this.myAlarmDB.deleteAlarm(WEEK_DAYS[curr_day]);
     	clearAlarmFields();
+    	
+    	Context context = getApplicationContext();
+		Toast.makeText(context, "Removed Alarm for " + WEEK_DAYS[curr_day], Toast.LENGTH_SHORT).show();
     }
     
     public void onItemSelected(AdapterView<?> parent, View v, int position,

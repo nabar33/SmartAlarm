@@ -32,9 +32,6 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(CREATE_ALARMS_TABLE);
 		db.execSQL(CREATE_ROUTES_TABLE);
-		//for (int i = 0; i < 7; i++)
-		//	db.execSQL("INSERT INTO alarms (week_day, route_id, prep_time, alarm_time)" +
-		//			   "VALUES (" + AlarmsActivity.WEEK_DAYS[i] + ",0,0,0)");
 	}
 
 	@Override
