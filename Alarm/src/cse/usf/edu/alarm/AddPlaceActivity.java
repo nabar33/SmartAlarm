@@ -10,11 +10,16 @@ public class AddPlaceActivity extends Activity {
 	{
 		super.onCreate(savedInstanceState);
 		
+		
+		
 		setContentView(R.layout.add_route_view);
 	}
 
 	public void addLocation(View view)
 	{
+		//Move destination to database
 		finish();
 	}
+	
+	
 }
