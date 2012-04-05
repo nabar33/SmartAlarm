@@ -23,24 +23,27 @@ import android.widget.Toast;
 public class AlarmService extends Service {
 	private final static int GPS_UPDATE_INTERVAL = 1000 * 60 * 10;
 	private final static int GPS_UPDATE_DISTANCE = 100;
-	LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+	LocationManager locationManager;
 
-	LocationListener locationListener = new LocationListener() {
-		public void onLocationChanged(Location location) {
-			// Called when a new location is found by the network location
-			// provider.
-			try {
-				updateAlarmTimes(location);
-			} catch (Exception e) {
-				Toast.makeText(null, "Oh Lawd..", Toast.LENGTH_LONG);
-			}
-		}
-		public void onStatusChanged(String provider, int status, Bundle extras) {}
-		public void onProviderEnabled(String provider) {}
-		public void onProviderDisabled(String provider) {}
-	};
-	
 	public void onStartCommand(){
+		
+		LocationListener locationListener = new LocationListener() {
+				public void onLocationChanged(Location location) {
+					// Called when a new location is found by the network location
+					// provider.
+					try {
+						updateAlarmTimes(location);
+					} catch (Exception e) {
+						Toast.makeText(null, "Oh Lawd..", Toast.LENGTH_LONG);
+					}
+				}
+				public void onStatusChanged(String provider, int status, Bundle extras) {}
+				public void onProviderEnabled(String provider) {}
+				public void onProviderDisabled(String provider) {}
+			};
+			
+		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+			
 		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, GPS_UPDATE_INTERVAL, GPS_UPDATE_DISTANCE, locationListener);
 	}
 	
@@ -51,9 +54,7 @@ public class AlarmService extends Service {
 
 		StringBuilder urlString = new StringBuilder();
 		
-		String street = "blagh";
-		String city = "blah";
-		String state = "bah";
+		String address = "blah";
 		
 		urlString.append("https://maps.googleapis.com/maps/api/distancematrix/json?");
 		urlString.append("origins=");// from
@@ -61,15 +62,8 @@ public class AlarmService extends Service {
 		urlString.append(",");
 		urlString.append(Double.toString(longitude));
 		urlString.append("&destinations=");// to
-		street.replace(' ', '+');
-		city.replace(' ', '+');
-		state.replace(' ', '+');
-		urlString.append(street);
-		urlString.append("+");
-		urlString.append(city);
-		urlString.append("+");
-		urlString.append(state);
-		
+		address.replace(' ', '+');	
+		urlString.append(address);
 		urlString.append("&sensor=true");
 		
 		HttpURLConnection urlConnection = null;
@@ -101,7 +95,11 @@ public class AlarmService extends Service {
 
 	    JSONObject duration = elements.getJSONObject(1);
 	    
-	    int travelTime = duration.getInt("value");	
+	    int travelTime = duration.getInt("value");
+	    
+	    //Get prep-time
+	    //Get alarm-time
+	    //Compute alarm sounding time
 	}
 
 	@Override

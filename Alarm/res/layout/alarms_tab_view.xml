@@ -22,14 +22,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/day_label" />
-
+        
+        <RadioButton
+            android:id="@+id/alarm_type"
+            android:text="lawd"
+            android:layout_width="wrap_content" 
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/day_choice" />
+        
         <TextView
             android:id="@+id/dest_intro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Where are you going?"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_below="@+id/day_choice" />
+            android:layout_below="@+id/alarm_type" />
 
         <Spinner
             android:id="@+id/dest_picker"
