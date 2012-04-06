@@ -9,10 +9,14 @@ import android.database.CursorIndexOutOfBoundsException;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -46,9 +50,34 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
         
         // Fill remaining fields
         populateAlarmFields(WEEK_DAYS[0]);
+        
+        //Set up radio buttons
+        addRadioButtonListeners();
     }
     
-    public void populateAlarmFields(String selectedDay)
+    
+    private void addRadioButtonListeners() {
+		RadioGroup alarm_type_radiogroup = (RadioGroup) findViewById(R.id.alarm_type_radiogroup);
+		alarm_type_radiogroup.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				RadioButton smart = (RadioButton) findViewById(R.id.alarm_type_smart);
+				RadioButton standard = (RadioButton) findViewById(R.id.alarm_type_standard);
+				
+				if(smart.getId()==checkedId){
+					findViewById(R.id.bottom_smart_layout).setVisibility(View.VISIBLE);
+					findViewById(R.id.bottom_standard_layout).setVisibility(View.INVISIBLE);
+				}else{
+					findViewById(R.id.bottom_smart_layout).setVisibility(View.INVISIBLE);
+					findViewById(R.id.bottom_standard_layout).setVisibility(View.VISIBLE);
+				}
+			}
+			
+		});
+	}
+
+
+	public void populateAlarmFields(String selectedDay)
     {
     	int atime;
     	try
