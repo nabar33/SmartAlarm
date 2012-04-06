@@ -96,6 +96,7 @@ public class AlarmService extends Service {
 	    JSONObject duration = elements.getJSONObject(1);
 	    
 	    int travelTime = duration.getInt("value");
+	    Toast.makeText(null, travelTime, Toast.LENGTH_LONG);
 	    
 	    //Get prep-time
 	    //Get alarm-time

@@ -39,7 +39,7 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
         myAlarmDB.open();
         
         // Populate Alarm spinner
-        Spinner spinner = (Spinner) findViewById(R.id.day_choice);
+        Spinner spinner = (Spinner) findViewById(R.id.day_spinner);
         spinner.setOnItemSelectedListener(this);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.row_entry, R.id.day, WEEK_DAYS);
         spinner.setAdapter(adapter);
@@ -58,18 +58,18 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     		if (alarmData.getColumnCount() > 4)
     		{
     			// Set Time Picker
-    			TimePicker timeSetter = (TimePicker) findViewById( R.id.destination_time_picker );
+    			TimePicker timeSetter = (TimePicker) findViewById( R.id.place_time_timepicker );
     			atime = alarmData.getInt(4);
     			timeSetter.setCurrentHour(atime / 100);
     			timeSetter.setCurrentMinute(atime % 100);
 
     			// Set prep time fields
     			// hour
-    			EditText ted = (EditText) findViewById(R.id.Hour);
+    			EditText ted = (EditText) findViewById(R.id.hour_edittext);
     			atime = alarmData.getInt(3);
     			ted.setText(Integer.toString(atime / 60));
     			// minute
-    			ted = (EditText) findViewById(R.id.Minute);
+    			ted = (EditText) findViewById(R.id.minute_edittext);
     			ted.setText(Integer.toString(atime % 60));
     		}
     		else
@@ -95,13 +95,13 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     
     public void clearAlarmFields()
     {
-    	TimePicker timeSetter = (TimePicker) findViewById(R.id.destination_time_picker);
+    	TimePicker timeSetter = (TimePicker) findViewById(R.id.place_time_timepicker);
     	timeSetter.setCurrentHour(12);
     	timeSetter.setCurrentMinute(0);
     	
-    	EditText ted = (EditText) findViewById(R.id.Hour);
+    	EditText ted = (EditText) findViewById(R.id.hour_edittext);
 		ted.setText("Hour");
-		ted = (EditText) findViewById(R.id.Minute);
+		ted = (EditText) findViewById(R.id.minute_edittext);
 		ted.setText("Minute");
 		
 		CheckBox checky = (CheckBox) findViewById(R.id.alarm_everyday_checkbox);
@@ -110,17 +110,17 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     
     public void addAlarm(View v)
     {
-    	Spinner spinny = (Spinner) findViewById(R.id.day_choice);
+    	Spinner spinny = (Spinner) findViewById(R.id.day_spinner);
     	int curr_day = spinny.getLastVisiblePosition();
     	
     	// Retrieve info from TimePicker
-    	TimePicker timeSetter = (TimePicker) findViewById(R.id.destination_time_picker);
+    	TimePicker timeSetter = (TimePicker) findViewById(R.id.place_time_timepicker);
     	int ahour = timeSetter.getCurrentHour();
     	int aminute = timeSetter.getCurrentMinute();
     	
     	// Retrieve info from prep time fields
-    	EditText ted1 = (EditText) findViewById(R.id.Hour);
-    	EditText ted2 = (EditText) findViewById(R.id.Minute);
+    	EditText ted1 = (EditText) findViewById(R.id.hour_edittext);
+    	EditText ted2 = (EditText) findViewById(R.id.minute_edittext);
     	int phour;
     	int pminute;
     	try
@@ -197,7 +197,7 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     
     public void deleteAlarm(View v)
     {
-    	Spinner spinny = (Spinner) findViewById(R.id.day_choice);
+    	Spinner spinny = (Spinner) findViewById(R.id.day_spinner);
     	int curr_day = spinny.getLastVisiblePosition();
     	
     	this.myAlarmDB.deleteAlarm(WEEK_DAYS[curr_day]);

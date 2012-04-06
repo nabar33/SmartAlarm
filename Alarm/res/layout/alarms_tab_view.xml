@@ -5,92 +5,117 @@
     android:orientation="vertical" >
 
     <RelativeLayout
-        android:id="@+id/scrollything"
+        android:id="@+id/scrolling_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/day_label"
+            android:id="@+id/day_textview"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:text="Day"
+            android:text="Which day's alarm will you edit?"
             android:textAppearance="?android:attr/textAppearanceLarge" />
-        
-        <Spinner
-            android:id="@+id/day_choice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/day_label" />
-        
-        <RadioButton
-            android:id="@+id/alarm_type"
-            android:text="lawd"
-            android:layout_width="wrap_content" 
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/day_choice" />
-        
-        <TextView
-            android:id="@+id/dest_intro"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Where are you going?"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_below="@+id/alarm_type" />
 
         <Spinner
-            android:id="@+id/dest_picker"
+            android:id="@+id/day_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/dest_intro" />
+            android:layout_below="@+id/day_textview" />
 
         <TextView
-            android:id="@+id/destination_time_text"
+            android:id="@+id/alarm_type_textview"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="What time do you need to be there?"
-            android:textAppearance="?android:attr/textAppearanceMedium" 
-            android:layout_below="@+id/dest_picker"/>
+            android:layout_below="@+id/day_spinner"
+            android:text="Smart Alarm or Standard Alarm?"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <RadioGroup
+            android:id="@+id/alarm_type_radiogroup"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/alarm_type_textview"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/alarm_type_standard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"             
+                android:text="Smart"
+                android:textAppearance="?android:attr/textAppearanceMedium"  />
+
+            <RadioButton
+                android:id="@+id/alarm_type_smart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="Standard"
+                android:textAppearance="?android:attr/textAppearanceMedium"  />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/place_choice_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/alarm_type_radiogroup"
+            android:text="Where are you going?"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Spinner
+            android:id="@+id/place_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/place_choice_textview" />
+
+        <TextView
+            android:id="@+id/place_time_textview"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/place_spinner"
+            android:text="When should you be there?"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TimePicker
-            android:id="@+id/destination_time_picker"
+            android:id="@+id/place_time_timepicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/destination_time_text"
+            android:layout_below="@+id/place_time_textview"
             android:layout_centerHorizontal="true" />
 
         <TextView
-            android:id="@+id/ready_time_text"
+            android:id="@+id/prep_time_textview"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="How long does it take you to get ready?"
-            android:textAppearance="?android:attr/textAppearanceMedium" 
-            android:layout_below="@+id/destination_time_picker" />
-        
+            android:layout_below="@+id/place_time_timepicker"
+            android:text="How fast will you be ready?"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
         <EditText
-            android:id="@+id/Hour"
+            android:id="@+id/hour_edittext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/ready_time_text"
-            android:layout_toLeftOf="@+id/Center"
+            android:layout_below="@+id/prep_time_textview"
+            android:layout_toLeftOf="@+id/center"
             android:inputType="number"
             android:text="Hour" />
 
         <EditText
-            android:id="@+id/Center"
+            android:id="@+id/center"
             android:layout_width="0.0dip"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ready_time_text"
+            android:layout_below="@+id/prep_time_textview"
             android:layout_centerHorizontal="true" />
 
         <EditText
-            android:id="@+id/Minute"
+            android:id="@+id/minute_edittext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/ready_time_text"
-            android:layout_toRightOf="@+id/Center"
+            android:layout_below="@+id/prep_time_textview"
+            android:layout_toRightOf="@+id/center"
             android:inputType="number"
             android:text="Minute" />
 
@@ -98,40 +123,30 @@
             android:id="@+id/alarm_everyday_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/Minute"
+            android:layout_below="@+id/minute_edittext"
             android:layout_centerHorizontal="true"
             android:text="Apply this alarm to entire week"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        
-        <LinearLayout 
-            android:orientation="horizontal"
+        <Button
+            android:id="@+id/apply_button"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/alarm_everyday_checkbox">        
-            
-            <Button
-            	android:id="@+id/apply_button"
-            	android:layout_width="fill_parent"
-            	android:layout_height="fill_parent"
-            	android:layout_weight="0.5"
-            	android:onClick="addAlarm"
-            	android:text="Save Alarm"
-            	android:textAppearance="?android:attr/textAppearanceLarge" 
-            	/>
-            
-            <Button
-            	android:id="@+id/delete_button"
-            	android:layout_width="fill_parent"
-            	android:layout_height="fill_parent"
-            	android:layout_weight="0.5"
-            	android:onClick="deleteAlarm"
-            	android:text="Delete Alarm"
-            	android:textAppearance="?android:attr/textAppearanceLarge" 
-            	/>
-            
-        </LinearLayout>
-        
+            android:layout_below="@+id/alarm_everyday_checkbox"
+            android:layout_toLeftOf="@+id/center"
+            android:onClick="deleteAlarm"
+            android:text="Clear Entries"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <Button
+            android:id="@+id/delete_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/alarm_everyday_checkbox"
+            android:layout_toRightOf="@+id/center"
+            android:onClick="addAlarm"
+            android:text="Save Alarm"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
     </RelativeLayout>
 
 </ScrollView>
