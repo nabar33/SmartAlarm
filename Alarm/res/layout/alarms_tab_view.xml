@@ -130,7 +130,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <Button
-                android:id="@+id/apply_button"
+                android:id="@+id/delete_button"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/alarm_everyday_checkbox"
@@ -138,15 +138,15 @@
                 android:onClick="deleteAlarm"
                 android:text="Clear Entries"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
-            
+
             <EditText
-            android:id="@+id/center"
-            android:layout_width="0.0dip"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true" />
+                android:id="@+id/center"
+                android:layout_width="0.0dip"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true" />
 
             <Button
-                android:id="@+id/delete_button"
+                android:id="@+id/save_smart_button"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/alarm_everyday_checkbox"
@@ -163,17 +163,32 @@
             android:layout_below="@+id/alarm_type_radiogroup"
             android:visibility="invisible" >
             
+            <TextView
+                android:id="@+id/wake_time_textview"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/place_spinner"
+                android:text="When do you want to wake up?"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+            
+            <TimePicker
+                android:id="@+id/wake_time_timepicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/wake_time_textview"
+                android:layout_centerHorizontal="true" />
+
             <CheckBox
                 android:id="@+id/alarm_everyday_checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/minute_edittext"
+                android:layout_below="@+id/wake_time_timepicker"
                 android:layout_centerHorizontal="true"
                 android:text="Apply this alarm to entire week"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <Button
-                android:id="@+id/apply_button"
+                android:id="@+id/delete_button"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/alarm_everyday_checkbox"
@@ -181,15 +196,15 @@
                 android:onClick="deleteAlarm"
                 android:text="Clear Entries"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
-            
+
             <EditText
-            android:id="@+id/center"
-            android:layout_width="0.0dip"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true" />
+                android:id="@+id/center"
+                android:layout_width="0.0dip"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true" />
 
             <Button
-                android:id="@+id/delete_button"
+                android:id="@+id/save_standard_button"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/alarm_everyday_checkbox"

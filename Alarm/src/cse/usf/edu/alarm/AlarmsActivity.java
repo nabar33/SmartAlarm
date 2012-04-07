@@ -62,9 +62,8 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
 
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				RadioButton smart = (RadioButton) findViewById(R.id.alarm_type_smart);
-				RadioButton standard = (RadioButton) findViewById(R.id.alarm_type_standard);
 				
-				if(smart.getId()==checkedId){
+				if(!(smart.getId()==checkedId)){
 					findViewById(R.id.bottom_smart_layout).setVisibility(View.VISIBLE);
 					findViewById(R.id.bottom_standard_layout).setVisibility(View.INVISIBLE);
 				}else{
