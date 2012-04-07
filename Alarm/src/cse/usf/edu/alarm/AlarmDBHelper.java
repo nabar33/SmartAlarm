@@ -16,6 +16,12 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
     		"prep_time INTEGER NOT NULL, " +
     	    "alarm_time INTEGER NOT NULL)";
 	
+	private static final String CREATE_ALARMS_DUMB_TABLE = 
+    		"CREATE TABLE dumbs(" +
+    		"_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+    		"week_day TEXT NOT NULL, " +
+    	    "alarm_time INTEGER NOT NULL)";
+	
 	private static final String CREATE_ROUTES_TABLE = 
 			"CREATE TABLE routes(" +
 			"_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -31,6 +37,7 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(CREATE_ALARMS_TABLE);
+		db.execSQL(CREATE_ALARMS_DUMB_TABLE);
 		db.execSQL(CREATE_ROUTES_TABLE);
 	}
 
@@ -38,6 +45,7 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL("DROP TABLE IF EXISTS alarms");
 		db.execSQL("DROP TABLE IF EXISTS routes");
+		db.execSQL("DROP TABLE IF EXISTS dumbs");
 		onCreate(db);
 	}
 

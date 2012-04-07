@@ -108,7 +108,7 @@
                 android:layout_below="@+id/prep_time_textview"
                 android:layout_toLeftOf="@+id/center"
                 android:inputType="number"
-                android:text="Hour" />
+                android:hint="Hours" />
 
             <EditText
                 android:id="@+id/minute_edittext"
@@ -118,7 +118,7 @@
                 android:layout_below="@+id/prep_time_textview"
                 android:layout_toRightOf="@+id/center"
                 android:inputType="number"
-                android:text="Minute" />
+                android:hint="Minutes" />
 
             <CheckBox
                 android:id="@+id/alarm_everyday_checkbox"
@@ -188,12 +188,12 @@
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <Button
-                android:id="@+id/delete_button"
+                android:id="@+id/delete_standard_button"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/alarm_everyday_checkbox"
                 android:layout_toLeftOf="@+id/center"
-                android:onClick="deleteAlarm"
+                android:onClick="deleteDumbAlarm"
                 android:text="Clear Entries"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -209,7 +209,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/alarm_everyday_checkbox"
                 android:layout_toRightOf="@+id/center"
-                android:onClick="addAlarm"
+                android:onClick="addDumbAlarm"
                 android:text="Save Alarm"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
         </RelativeLayout>
