@@ -9,13 +9,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 public class PlacesActivity extends Activity implements AdapterView.OnItemSelectedListener {
-    public RouteDBManager myRouteDB;
+    public PlaceDBManager myRouteDB;
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.places_tab_view);
         
-        this.myRouteDB = new RouteDBManager(this);
+        this.myRouteDB = new PlaceDBManager(this);
         this.myRouteDB.open();
         
         //Populate place spinner
