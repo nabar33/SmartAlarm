@@ -48,10 +48,16 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
         myDumbDB.open();
         
         // Populate Alarm spinner
-        Spinner spinner = (Spinner) findViewById(R.id.day_spinner);
-        spinner.setOnItemSelectedListener(this);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.row_entry, R.id.day, WEEK_DAYS);
-        spinner.setAdapter(adapter);
+        Spinner day_spinner = (Spinner) findViewById(R.id.day_spinner);
+        day_spinner.setOnItemSelectedListener(this);
+        ArrayAdapter<String> day_adapter = new ArrayAdapter<String>(this, R.layout.day_spinner_row_entry, R.id.day, WEEK_DAYS);
+        day_spinner.setAdapter(day_adapter);
+        
+        //Populate Place spinner
+        Spinner place_spinner = (Spinner) findViewById(R.id.place_spinner);
+        place_spinner.setOnItemSelectedListener(this);
+        ArrayAdapter<String> place_adapter = new ArrayAdapter<String>(this, R.layout.place_spinner_row_entry, R.id.day, WEEK_DAYS);
+        place_spinner.setAdapter(place_adapter);
         
         
         

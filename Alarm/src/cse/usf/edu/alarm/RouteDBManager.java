@@ -32,7 +32,6 @@ public class RouteDBManager {
 		ContentValues cv = new ContentValues();
 		cv.put("place_name", name);
 		cv.put("end_address", dest);
-		cv.put("from_address", origin);
 		
 		return cv;
 	}

@@ -22,12 +22,11 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
     		"week_day TEXT NOT NULL, " +
     	    "alarm_time INTEGER NOT NULL)";
 	
-	private static final String CREATE_ROUTES_TABLE = 
+	private static final String CREATE_PLACES_TABLE = 
 			"CREATE TABLE routes(" +
 			"_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
 			"place_name TEXT NOT NULL, " +
-			"end_address TEXT NOT NULL, " +
-			"from_address TEXT NOT NULL)";
+			"address TEXT NOT NULL, ";
 	
 	public AlarmDBHelper(Context context)
 	{
@@ -38,7 +37,7 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(CREATE_ALARMS_TABLE);
 		db.execSQL(CREATE_ALARMS_DUMB_TABLE);
-		db.execSQL(CREATE_ROUTES_TABLE);
+		db.execSQL(CREATE_PLACES_TABLE);
 	}
 
 	@Override
