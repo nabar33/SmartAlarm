@@ -9,124 +9,85 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" >
-        
-        <TextView 
-            android:id="@+id/set_destination_text"
+
+        <TextView
+            android:id="@+id/set_destination_textview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" 
+            android:layout_height="wrap_content"
+            android:layout_margin="2dip"
             android:text="Where are you going?"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_margin="2dip" />"
-        
-        <TextView 
-            android:id="@+id/street"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
-            android:text="Street: "
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/set_destination_text"
-            android:paddingTop="15dip"
-            android:gravity="left"
-            android:layout_margin="2dip" />
-                
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
         <EditText
-            android:layout_toRightOf="@+id/street"
-            android:layout_alignTop="@+id/street"
-            android:layout_width="wrap_content"
+            android:id="@+id/name_edittext"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_margin="2dip" />
-        
-        <TextView 
-            android:id="@+id/city"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
-            android:text="City: "
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/street"
-            android:paddingTop="15dip"
-            android:layout_margin="2dip" />
-        
+            android:layout_margin="2dip"
+            android:hint="Place Name"
+            android:layout_below="@+id/set_destination_textview" />
+
         <EditText
-            android:layout_toRightOf="@+id/city"
-            android:layout_alignTop="@+id/city"
-            android:layout_width="wrap_content"
+            android:id="@+id/street_edittext"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_margin="2dip" />
-        
-        <TextView 
-            android:id="@+id/state"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
-            android:text="State: "
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/city"
-            android:paddingTop="15dip"
-            android:layout_margin="2dip" />
-        
+            android:layout_margin="2dip"
+            android:hint="Street"
+            android:layout_below="@+id/name_edittext" />
+
         <EditText
-            android:layout_toRightOf="@+id/state"
-            android:layout_alignTop="@+id/state"
-            android:layout_width="wrap_content"
+            android:id="@+id/city_edittext"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_margin="2dip" />
-        
-        <TextView 
-            android:id="@+id/zip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
-            android:text="Zip Code: "
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/state"
-            android:paddingTop="15dip"
-            android:layout_margin="2dip" />
-        
+            android:layout_margin="2dip"
+            android:hint="City"
+            android:layout_below="@+id/street_edittext" />
+
         <EditText
-            android:layout_toRightOf="@+id/zip"
-            android:layout_alignTop="@+id/zip"
-            android:layout_width="wrap_content"
+            android:id="@+id/state_edittext"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_margin="2dip" />
-        
-        <Button 
+            android:layout_margin="2dip"
+            android:hint="State"
+            android:layout_below="@+id/city_edittext" />
+
+        <EditText
+            android:id="@+id/zip_edittext"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dip"
+            android:hint="Zip Code"
+            android:layout_below="@+id/state_edittext" />
+
+        <Button
             android:id="@+id/create_route"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Create Route"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_below="@+id/zip"
-            android:layout_toLeftOf="@+id/Center"
             android:layout_alignParentLeft="true"
             android:layout_margin="2dip"
-            android:onClick="addLocation" />
-        
+            android:layout_toLeftOf="@+id/Center"
+            android:onClick="addLocation"
+            android:text="Create Route"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_below="@+id/zip_edittext" />
+
         <EditText
             android:id="@+id/Center"
             android:layout_width="0.0dip"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ready_time_text"
             android:layout_centerHorizontal="true" />
-        
-        <Button 
+
+        <Button
             android:id="@+id/delete_route"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="2dip"
+            android:layout_toRightOf="@+id/Center"
+            android:onClick="addLocation"
             android:text="Delete Route"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_below="@+id/zip"
-            android:layout_toRightOf="@+id/Center"
-            android:layout_alignParentRight="true"
-            android:onClick="addLocation"
-            android:layout_margin="2dip" />
-        
-        
-        
+            android:layout_below="@+id/zip_edittext" />
     </RelativeLayout>
+
 </ScrollView>
