@@ -27,11 +27,11 @@ public class PlaceDBManager {
 		dbHelper.close();
 	}
 
-	public ContentValues buildPlace(String name, String dest, String origin)
+	public ContentValues buildPlace(String name, String destination)
 	{
 		ContentValues cv = new ContentValues();
 		cv.put("place_name", name);
-		cv.put("end_address", dest);
+		cv.put("end_address", destination);
 		
 		return cv;
 	}
@@ -54,15 +54,15 @@ public class PlaceDBManager {
 		return mCursor;
 	}
 	
-	public long createPlace(String name, String dest, String origin)
+	public long createPlace(String name, String destination)
 	{
-		ContentValues cv = buildPlace(name, dest, origin);
+		ContentValues cv = buildPlace(name, destination);
 		return database.insert("places", null, cv);
 	}
 	
-	public long editPlace(long placeId, String name, String dest, String origin)
+	public long editPlace(long placeId, String name, String destination)
 	{
-		ContentValues cv = buildPlace(name, dest, origin);
+		ContentValues cv = buildPlace(name, destination);
 		return database.update("places", cv, "_id=" + placeId, null);
 	}
 	
