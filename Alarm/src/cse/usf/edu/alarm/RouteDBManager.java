@@ -27,12 +27,11 @@ public class RouteDBManager {
 		dbHelper.close();
 	}
 
-	public ContentValues buildRoute(String name, String dest, String origin)
+	public ContentValues buildRoute(String name, String dest)
 	{
 		ContentValues cv = new ContentValues();
 		cv.put("place_name", name);
 		cv.put("end_address", dest);
-		cv.put("from_address", origin);
 		
 		return cv;
 	}
@@ -55,15 +54,15 @@ public class RouteDBManager {
 		return mCursor;
 	}
 	
-	public long createRoute(String name, String dest, String origin)
+	public long createRoute(String name, String dest)
 	{
-		ContentValues cv = buildRoute(name, dest, origin);
+		ContentValues cv = buildRoute(name, dest);
 		return database.insert("routes", null, cv);
 	}
 	
-	public long editRoute(long routeId, String name, String dest, String origin)
+	public long editRoute(long routeId, String name, String address)
 	{
-		ContentValues cv = buildRoute(name, dest, origin);
+		ContentValues cv = buildRoute(name, address);
 		return database.update("routes", cv, "_id=" + routeId, null);
 	}
 	

@@ -25,6 +25,7 @@ import android.widget.Toast;
 public class AlarmsActivity extends Activity implements AdapterView.OnItemSelectedListener {
     
 	public AlarmDBManager myAlarmDB;
+	public RouteDBManager myRouteDB;
 	public static final String[] WEEK_DAYS = 
 		{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 	
@@ -37,6 +38,10 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
         // Open Alarm Database
         myAlarmDB = new AlarmDBManager(this);
         myAlarmDB.open();
+        
+        // Open Route Database
+        myRouteDB = new RouteDBManager(this);
+        myRouteDB.open();
         
         // Populate Alarm spinner
         Spinner spinner = (Spinner) findViewById(R.id.day_choice);
@@ -230,5 +235,6 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
 	{
 		super.onStop();
 		myAlarmDB.close();
+		myRouteDB.close();
 	}
 }

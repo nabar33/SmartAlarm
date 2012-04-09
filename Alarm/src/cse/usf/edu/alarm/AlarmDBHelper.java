@@ -12,7 +12,7 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
     		"CREATE TABLE alarms(" +
     		"_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
     		"week_day TEXT NOT NULL, " +
-    	    "route_id INTEGER NOT NULL, " +
+    	    "route_id TEXT NOT NULL, " +
     		"prep_time INTEGER NOT NULL, " +
     	    "alarm_time INTEGER NOT NULL)";
 	
@@ -20,8 +20,7 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
 			"CREATE TABLE routes(" +
 			"_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
 			"place_name TEXT NOT NULL, " +
-			"end_address TEXT NOT NULL, " +
-			"from_address TEXT NOT NULL)";
+			"end_address TEXT NOT NULL)";
 	
 	public AlarmDBHelper(Context context)
 	{
