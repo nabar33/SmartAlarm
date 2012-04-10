@@ -16,15 +16,15 @@ public class PlacesActivity extends Activity implements AdapterView.OnItemSelect
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.places_tab_view);
         
-        this.myPlaceDB = new PlaceDBManager(this);
-        this.myPlaceDB.open();
+        myPlaceDB = new PlaceDBManager(this);
+        myPlaceDB.open();
         
         //Populate place spinner
         Spinner spinner = (Spinner) findViewById(R.id.place_edit_spinner);
         spinner.setOnItemSelectedListener(this);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.place_spinner_row_entry, R.id.day );
         adapter.add("{New Place}");
-        
+        //TODO pull place names from DB
         spinner.setAdapter(adapter);
         
     }

@@ -31,7 +31,7 @@ public class PlaceDBManager {
 	{
 		ContentValues cv = new ContentValues();
 		cv.put("place_name", name);
-		cv.put("end_address", destination);
+		cv.put("address", destination);
 		
 		return cv;
 	}

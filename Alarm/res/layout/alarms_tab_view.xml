@@ -39,7 +39,7 @@
             android:orientation="horizontal" >
 
             <RadioButton
-                android:id="@+id/alarm_type_standard"
+                android:id="@+id/alarm_type_smart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
@@ -48,7 +48,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <RadioButton
-                android:id="@+id/alarm_type_smart"
+                android:id="@+id/alarm_type_standard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
@@ -179,7 +179,7 @@
                 android:layout_centerHorizontal="true" />
 
             <CheckBox
-                android:id="@+id/alarm_everyday_checkbox"
+                android:id="@+id/dumb_everyday_checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/wake_time_timepicker"
@@ -191,17 +191,23 @@
                 android:id="@+id/delete_standard_button"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/alarm_everyday_checkbox"
+                android:layout_below="@+id/dumb_everyday_checkbox"
                 android:layout_toLeftOf="@+id/center"
                 android:onClick="deleteDumbAlarm"
                 android:text="Clear Entries"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
+            
+            <TextView
+                android:id="@+id/center"
+                android:layout_width="0.0dip"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true" />
 
             <Button
                 android:id="@+id/save_standard_button"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/alarm_everyday_checkbox"
+                android:layout_below="@+id/dumb_everyday_checkbox"
                 android:layout_toRightOf="@+id/center"
                 android:onClick="addDumbAlarm"
                 android:text="Save Alarm"
