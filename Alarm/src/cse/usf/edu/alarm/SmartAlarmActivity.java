@@ -27,7 +27,8 @@ public class SmartAlarmActivity extends TabActivity {
 	
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
@@ -61,6 +62,6 @@ public class SmartAlarmActivity extends TabActivity {
 		tabHost.setCurrentTab(0);
 		
 		startService(new Intent(this, AlarmService.class));
-
-		}
+		
+	}
 }

@@ -31,8 +31,9 @@ public class AlarmService extends Service {
 	private DumbDBManager dumbData;
 	private PlaceDBManager placeData;
 	LocationManager locationManager;
-
-	public void onStartCommand(){
+	
+	public void onStartCommand()
+	{
 		alarmData.open();
 		dumbData.open();
 		placeData.open();
