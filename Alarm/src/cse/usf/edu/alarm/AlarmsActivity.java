@@ -30,7 +30,6 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     
 	public AlarmDBManager myAlarmDB;
 	public PlaceDBManager myPlaceDB;
-	public DumbDBManager myDumbDB;
 	public static final String[] WEEK_DAYS = 
 		{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 	
@@ -47,10 +46,6 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
         // Open Place Database
         myPlaceDB = new PlaceDBManager(this);
         myPlaceDB.open();
-
-        //Open Database for standard alarms
-        myDumbDB = new DumbDBManager(this);
-        myDumbDB.open();
         
         // Populate Alarm spinner
         Spinner day_spinner = (Spinner) findViewById(R.id.day_spinner);
@@ -104,46 +99,6 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     	return R.id.alarm_type_smart == alarm_type.getCheckedRadioButtonId();
     }
 
-    
-	public void populateDumbAlarm(String selectedDay)
-    {
-    	int atime;
-    	if (!isSmartView())
-    	{
-    		try
-    		{
-    			Cursor alarmData = myDumbDB.getAlarm(selectedDay);
-
-    			if (alarmData.getColumnCount() > 2)
-    			{
-    				// Set Time Picker
-    				TimePicker timeSetter = (TimePicker) findViewById( R.id.wake_time_timepicker );
-    				atime = alarmData.getInt(2);
-    				timeSetter.setCurrentHour(atime / 100);
-    				timeSetter.setCurrentMinute(atime % 100);
-
-    			}
-    			else
-    			{
-    				clearAlarmFields();
-    			}
-    			alarmData.close();
-    		}
-    		catch (SQLException squeak)
-    		{
-    			clearAlarmFields();
-    		}
-    		catch (CursorIndexOutOfBoundsException cioobe)
-    		{
-    			clearAlarmFields();
-    		}
-    		catch (IllegalStateException ise)
-    		{ // database is most likely not open
-    			myDumbDB.open();
-    			populateDumbAlarm(selectedDay); // this is dangerous
-    		}
-    	}
-    }
     
 	public void populatePlaceSpinner(ArrayAdapter<String> adap)
 	{
@@ -244,91 +199,11 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
 		checky.setChecked(false);
     }
     
-    public void clearDumbAlarmFields()
-    {
-    	TimePicker timeSetter = (TimePicker) findViewById(R.id.wake_time_timepicker);
-    	timeSetter.setCurrentHour(12);
-    	timeSetter.setCurrentMinute(0);
-		
-		CheckBox checky = (CheckBox) findViewById(R.id.dumb_everyday_checkbox);
-		checky.setChecked(false);
-    }
-    
-    public void addDumbAlarm(View v)
-    {
-    	
-    	Spinner spinny = (Spinner) findViewById(R.id.day_spinner);
-    	int curr_day = spinny.getLastVisiblePosition();
-    	
-    	// Retrieve info from TimePicker
-    	TimePicker timeSetter = (TimePicker) findViewById(R.id.wake_time_timepicker);
-    	int ahour = timeSetter.getCurrentHour();
-    	int aminute = timeSetter.getCurrentMinute();    	
-    	
-    	// Raw data
-    	int raw_alarm = ahour * 100 + aminute;
-
-    	/* Determine if Apply to All box is checked */
-    	CheckBox checky = (CheckBox) findViewById(R.id.dumb_everyday_checkbox);
-    	if (checky.isChecked()) // set alarm for all days
-    	{
-    		myDumbDB.deleteAllAlarms();
-    		for (String day : WEEK_DAYS)
-    		{
-    			myDumbDB.createAlarm(day, raw_alarm);
-    		}
-    		
-    		Context context = getApplicationContext();
-    		Toast.makeText(context, "Alarm Set for All Days", Toast.LENGTH_SHORT).show();
-    	}
-    	else  // set alarm for the current day only
-    	{
-    		/* Determine if an alarm already exists on that day */
-    		long id;
-    		try 
-    		{
-    			Cursor alarmData = this.myDumbDB.getAlarm(WEEK_DAYS[curr_day]);
-    			if (alarmData.getColumnCount() > 0)
-    				id = alarmData.getLong(0);
-    			else
-    				id = -1;
-    			alarmData.close();
-    		}
-    		catch (SQLException squeak)
-    		{
-    			// alarm doesn't exist yet for that day
-    			id = -1;
-    		}
-    		catch (CursorIndexOutOfBoundsException cioobe)
-    		{
-    			id = -1;
-    		}
-    		catch (IllegalStateException ise)
-    		{
-    			myDumbDB.open();
-    			addAlarm(v);
-    			return;
-    		}
-
-    		if (id >= 0) // then update alarm
-    		{
-    			myDumbDB.editAlarm(id, WEEK_DAYS[curr_day], raw_alarm);
-    		}
-    		else // create new alarm in database
-    		{
-    			myDumbDB.createAlarm(WEEK_DAYS[curr_day], raw_alarm);
-    		}
-
-    		Context context = getApplicationContext();
-    		Toast.makeText(context, "Alarm Set for " + WEEK_DAYS[curr_day], Toast.LENGTH_SHORT).show();
-    	}    	
-    	
-    }
-    
     public void addAlarm(View v)
     {
     	Spinner spinny = (Spinner) findViewById(R.id.day_spinner);
     	int curr_day = spinny.getLastVisiblePosition();
+    	int isSimple = isSmartView() ? 0:1;
     	
     	// Retrieve info from Place Spinner
     	String place = (String) ((Spinner) findViewById(R.id.place_spinner)).getSelectedItem();
@@ -427,17 +302,6 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
 		Toast.makeText(context, "Removed Alarm for " + WEEK_DAYS[curr_day], Toast.LENGTH_SHORT).show();
     }
 
-    public void deleteDumbAlarm(View v)
-    {
-    	Spinner spinny = (Spinner) findViewById(R.id.day_spinner);
-    	int curr_day = spinny.getLastVisiblePosition();
-    	
-    	this.myDumbDB.deleteAlarm(WEEK_DAYS[curr_day]);
-    	clearAlarmFields();
-    	
-    	Context context = getApplicationContext();
-		Toast.makeText(context, "Removed Alarm for " + WEEK_DAYS[curr_day], Toast.LENGTH_SHORT).show();
-    }
     
     public void onItemSelected(AdapterView<?> parent, View v, int position,
 			long id)
@@ -445,7 +309,6 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     	if (parent.getId() == R.id.day_spinner)
     	{
     		populateAlarmFields(WEEK_DAYS[position]);
-    		populateDumbAlarm(WEEK_DAYS[position]);
     	}
     }
     
@@ -466,7 +329,6 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
 		super.onStop();
 		myAlarmDB.close();
 		myPlaceDB.close();
-		myDumbDB.close();
 	}
 	
 	@Override
@@ -475,6 +337,5 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
 		super.onResume();
 		myAlarmDB.open();
 		myPlaceDB.open();
-		myDumbDB.open();
 	}
 }

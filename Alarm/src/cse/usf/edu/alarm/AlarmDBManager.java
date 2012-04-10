@@ -30,27 +30,28 @@ public class AlarmDBManager
 		dbHelper.close();
 	}
 	
-	private ContentValues buildAlarm(String day, String dest, int prep_time, int alarm_time)
+	private ContentValues buildAlarm(String day, String dest, int prep_time, int alarm_time, int simple)
 	{
 		ContentValues values = new ContentValues();
 		values.put("week_day", day);
 		values.put("place_id", dest);
 		values.put("prep_time", prep_time);
 		values.put("alarm_time", alarm_time);
+		values.put("simple", simple);
 		
 		return values;
 	}
 
-	public long createAlarm(String day, String dest, int prep_time, int alarm_time)
+	public long createAlarm(String day, String dest, int prep_time, int alarm_time, int simple)
 	{
-		ContentValues values = buildAlarm(day, dest, prep_time, alarm_time);
+		ContentValues values = buildAlarm(day, dest, prep_time, alarm_time, simple);
 		return database.insert("alarms", null, values);
 		
 	}
 	
-	public long editAlarm(long alarmId, String day, String dest, int prep_time, int alarm_time)
+	public long editAlarm(long alarmId, String day, String dest, int prep_time, int alarm_time, int simple)
 	{
-		ContentValues values = buildAlarm(day, dest, prep_time, alarm_time);
+		ContentValues values = buildAlarm(day, dest, prep_time, alarm_time, simple);
 		return database.update("alarms", values, "_id = " + alarmId, null);
 	}
 	
