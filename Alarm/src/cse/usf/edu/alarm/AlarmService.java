@@ -25,7 +25,7 @@ import android.os.IBinder;
 import android.widget.Toast;
 
 public class AlarmService extends Service {
-	private final static int GPS_UPDATE_INTERVAL = 1000 * 60 * 10;
+	private final static int GPS_UPDATE_INTERVAL = 1000 * 60;
 	private final static int GPS_UPDATE_DISTANCE = 100;
 	private AlarmDBManager alarmData;
 	private DumbDBManager dumbData;
@@ -83,10 +83,13 @@ public class AlarmService extends Service {
 	    else
 	    	alarmTime = currentTime - dumbWakeTime;
 	    
+	    if(alarmTime <= 0)
+	    {
+	    	
+	    }
+	    
 	    //TODO send the alarmTime int for displaying time til next alarm
 	    // make this service check periodically for alarmTime <= 0 -> play sound
-	    
-	    
 	}
 	
 	public int getETA(Location location, Cursor alarm)
