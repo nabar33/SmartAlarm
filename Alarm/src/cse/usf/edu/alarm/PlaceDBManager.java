@@ -54,6 +54,15 @@ public class PlaceDBManager {
 		return mCursor;
 	}
 	
+	public Cursor getAllPlaceNames()
+	{
+		Cursor mCursor = database.query(true, "places", new String[] {"place_name"}, 
+										null, null, null, null, null, null);
+		if (mCursor != null)
+			mCursor.moveToFirst();
+		return mCursor;
+	}
+	
 	public long createPlace(String name, String destination)
 	{
 		ContentValues cv = buildPlace(name, destination);

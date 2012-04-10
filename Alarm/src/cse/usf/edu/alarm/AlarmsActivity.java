@@ -29,7 +29,7 @@ import android.widget.Toast;
 public class AlarmsActivity extends Activity implements AdapterView.OnItemSelectedListener {
     
 	public AlarmDBManager myAlarmDB;
-	public RouteDBManager myRouteDB;
+	public PlaceDBManager myPlaceDB;
 	public DumbDBManager myDumbDB;
 	public static final String[] WEEK_DAYS = 
 		{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
@@ -45,8 +45,8 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
         myAlarmDB.open();
         
         // Open Route Database
-        myRouteDB = new RouteDBManager(this);
-        myRouteDB.open();
+        myPlaceDB = new PlaceDBManager(this);
+        myPlaceDB.open();
 
         //Open Database for standard alarms
         myDumbDB = new DumbDBManager(this);
@@ -396,7 +396,7 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
 	{
 		super.onStop();
 		myAlarmDB.close();
-		myRouteDB.close();
+		myPlaceDB.close();
 		myDumbDB.close();
 	}
 }

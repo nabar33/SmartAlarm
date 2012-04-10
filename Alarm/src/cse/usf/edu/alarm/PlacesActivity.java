@@ -1,6 +1,7 @@
 package cse.usf.edu.alarm;
 
 import android.app.Activity;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -25,6 +26,16 @@ public class PlacesActivity extends Activity implements AdapterView.OnItemSelect
         spinner.setOnItemSelectedListener(this);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.place_spinner_row_entry, R.id.day );
         adapter.add("{New Place}");
+        
+        Cursor places = myPlaceDB.getAllPlaceNames();
+        if (places != null && places.getCount() > 0)
+        {
+        	for (int i = 0; i < places.getCount(); i++)
+        	{
+        		adapter.add(places.getString(0));
+        		places.moveToNext();
+        	}
+        }
         
         spinner.setAdapter(adapter);
         
