@@ -43,18 +43,19 @@ public class PlacesActivity extends Activity implements AdapterView.OnItemSelect
     
     public void addPlace(View v)
     {
-    	EditText name = (EditText) findViewById(R.id.name_edittext);
-    	EditText street = (EditText) findViewById(R.id.street_edittext);
-    	EditText city = (EditText) findViewById(R.id.city_edittext);
-    	EditText state = (EditText) findViewById(R.id.state_edittext);
-    	EditText zip = (EditText) findViewById(R.id.zip_edittext);
+    	//EditText name = (EditText) findViewById(R.id.name_edittext);
+    	//EditText street = (EditText) findViewById(R.id.street_edittext);
+    	//EditText city = (EditText) findViewById(R.id.city_edittext);
+    	//EditText state = (EditText) findViewById(R.id.state_edittext);
+    	//EditText zip = (EditText) findViewById(R.id.zip_edittext);
     	
-    	String destination = street.getText() + " " +
-    					 city.getText() + " " +
-    					 state.getText() + " " +
-    					 zip.getText();
+    	String name = ((EditText) findViewById(R.id.name_edittext)).getText().toString();
+    	String street = ((EditText) findViewById(R.id.street_edittext)).getText().toString();
+    	String city = ((EditText) findViewById(R.id.city_edittext)).getText().toString();
+    	String state = ((EditText) findViewById(R.id.state_edittext)).getText().toString();
+    	String zip = ((EditText) findViewById(R.id.zip_edittext)).getText().toString();
     					
-    	myPlaceDB.createPlace(name.getText().toString(), destination);
+    	myPlaceDB.createPlace(name, street, city, state, zip);
     }
     
     public void deletePlace(View v)
@@ -67,7 +68,7 @@ public class PlacesActivity extends Activity implements AdapterView.OnItemSelect
 
 	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
 			long arg3) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 

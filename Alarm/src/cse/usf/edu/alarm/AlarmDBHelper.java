@@ -26,7 +26,10 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
 			"CREATE TABLE places(" +
 			"_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
 			"place_name TEXT NOT NULL, " +
-			"address TEXT NOT NULL)";
+			"street TEXT NOT NULL, " +
+			"city TEXT NOT NULL, " +
+			"state TEXT NOT NULL, " +
+			"zip TEXT NOT NULL)";
 	
 	public AlarmDBHelper(Context context)
 	{
