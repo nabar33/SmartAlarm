@@ -57,9 +57,9 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
         Spinner place_spinner = (Spinner) findViewById(R.id.place_spinner);
         place_spinner.setOnItemSelectedListener(this);
         ArrayAdapter<String> place_adapter = new ArrayAdapter<String>(this, R.layout.place_spinner_row_entry, R.id.place);
-        populatePlaceSpinner(place_adapter);
         place_spinner.setAdapter(place_adapter);
         
+        populatePlaceSpinner(place_adapter);
         
         populateAlarmFields(WEEK_DAYS[0]);
 
@@ -78,15 +78,21 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
 				
 				if(smart.getId()==checkedId){
 					//smart selected
-					findViewById(R.id.bottom_smart_layout).setVisibility(View.VISIBLE);
-					findViewById(R.id.bottom_standard_layout).setVisibility(View.INVISIBLE);
-					//populateAlarmFields(WEEK_DAYS[]);
+					findViewById(R.id.place_choice_textview).setVisibility(View.VISIBLE);
+					findViewById(R.id.place_spinner).setVisibility(View.VISIBLE);
+					findViewById(R.id.prep_time_textview).setVisibility(View.VISIBLE);
+					findViewById(R.id.hour_edittext).setVisibility(View.VISIBLE);
+					findViewById(R.id.minute_edittext).setVisibility(View.VISIBLE);
+					((TextView)findViewById(R.id.place_time_textview)).setText("When should you be there?");
 
 				}else{
 					//dumb selected
-					findViewById(R.id.bottom_smart_layout).setVisibility(View.INVISIBLE);
-					findViewById(R.id.bottom_standard_layout).setVisibility(View.VISIBLE);
-					//populateDumbAlarm(WEEK_DAYS[]);
+					findViewById(R.id.place_choice_textview).setVisibility(View.GONE);
+					findViewById(R.id.place_spinner).setVisibility(View.GONE);
+					findViewById(R.id.prep_time_textview).setVisibility(View.GONE);
+					findViewById(R.id.hour_edittext).setVisibility(View.GONE);
+					findViewById(R.id.minute_edittext).setVisibility(View.GONE);
+					((TextView)findViewById(R.id.place_time_textview)).setText("What time do you need to wake up?");
 				}
 			}
 			
@@ -102,7 +108,7 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     
 	public void populatePlaceSpinner(ArrayAdapter<String> adap)
 	{
-		if (adap != null && adap.getCount() == 0)
+		if (adap != null)
 		{
 			try
 			{
@@ -111,7 +117,8 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
 				{
 					for (int i = 0; i < places.getCount(); i++)
 					{
-						adap.add(places.getString(0));
+						if (adap.getPosition(places.getString(0)) < 0)
+							adap.add(places.getString(0));
 						places.moveToNext();
 					}
 				}
@@ -123,8 +130,7 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
 			}
 			catch (IllegalStateException ise)
 			{
-				myPlaceDB.open();
-				populatePlaceSpinner(adap);
+				Log.d("SmartAlarm", "Failed to populate place spinner");
 			}
 		}
 	}
@@ -132,27 +138,21 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
 	public void populateAlarmFields(String selectedDay)
     {
     	int atime;
-    	if (isSmartView())
+    	try
     	{
-    		try
-    		{
-    			Cursor alarmData = myAlarmDB.getAlarm(selectedDay);
+    		boolean isSmart = isSmartView();
+    		Cursor alarmData = myAlarmDB.getAlarm(selectedDay);
 
-    			if (alarmData.getColumnCount() > 4)
+    		if (alarmData != null && alarmData.getColumnCount() > 4)
+    		{
+    			if (isSmart) 
     			{
     				// Set PlaceSpinner
     				String place = alarmData.getString(2);
     				Spinner sp = (Spinner) findViewById(R.id.place_spinner);
     				ArrayAdapter<String> adap = (ArrayAdapter<String>) sp.getAdapter();
     				sp.setSelection(adap.getPosition(place));
-
-    				// Set Time Picker
-    				TimePicker timeSetter = (TimePicker) findViewById( R.id.place_time_timepicker );
-    				atime = alarmData.getInt(4);
-    				timeSetter.setCurrentHour(atime / 100);
-    				timeSetter.setCurrentMinute(atime % 100);
-
-
+    				
     				// Set prep time fields
     				// hour
     				EditText ted = (EditText) findViewById(R.id.hour_edittext);
@@ -162,25 +162,32 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     				ted = (EditText) findViewById(R.id.minute_edittext);
     				ted.setText(Integer.toString(atime % 60));
     			}
-    			else
-    			{
-    				clearAlarmFields();
-    			}
-    			alarmData.close();
+
+    			// Set Time Picker
+    			// This is universal regardless of alarm type
+    			TimePicker timeSetter = (TimePicker) findViewById( R.id.place_time_timepicker );
+    			atime = alarmData.getInt(4);
+    			timeSetter.setCurrentHour(atime / 100);
+    			timeSetter.setCurrentMinute(atime % 100);
     		}
-    		catch (SQLException squeak)
+    		else
     		{
     			clearAlarmFields();
     		}
-    		catch (CursorIndexOutOfBoundsException cioobe)
-    		{
-    			clearAlarmFields();
-    		}
-    		catch (IllegalStateException ise)
-    		{ // database is most likely not open
-    			myAlarmDB.open();
-    			populateAlarmFields(selectedDay); // this is dangerous
-    		}
+    		alarmData.close();
+    	}
+    	catch (SQLException squeak)
+    	{
+    		clearAlarmFields();
+    	}
+    	catch (CursorIndexOutOfBoundsException cioobe)
+    	{
+    		clearAlarmFields();
+    	}
+    	catch (IllegalStateException ise)
+    	{ // database is most likely not open
+    		myAlarmDB.open();
+    		populateAlarmFields(selectedDay); // this is dangerous
     	}
     }
     
@@ -203,31 +210,34 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     {
     	Spinner spinny = (Spinner) findViewById(R.id.day_spinner);
     	int curr_day = spinny.getLastVisiblePosition();
-    	int isSimple = isSmartView() ? 0:1;
+    	boolean isSmart = isSmartView();
+    	int ahour = 0, aminute = 0, phour = 0, pminute = 0;
+    	String place = "null";
     	
     	// Retrieve info from Place Spinner
-    	String place = (String) ((Spinner) findViewById(R.id.place_spinner)).getSelectedItem();
+    	if (isSmart)
+    		place = (String) ((Spinner) findViewById(R.id.place_spinner)).getSelectedItem();
     	
     	// Retrieve info from TimePicker
     	TimePicker timeSetter = (TimePicker) findViewById(R.id.place_time_timepicker);
-    	int ahour = timeSetter.getCurrentHour();
-    	int aminute = timeSetter.getCurrentMinute();
+    	ahour = timeSetter.getCurrentHour();
+    	aminute = timeSetter.getCurrentMinute();
     	
-    	// Retrieve info from prep time fields
-    	EditText ted1 = (EditText) findViewById(R.id.hour_edittext);
-    	EditText ted2 = (EditText) findViewById(R.id.minute_edittext);
-    	int phour;
-    	int pminute;
-    	try
-    	{
-    		phour = Integer.parseInt(ted1.getText().toString());
-    		pminute = Integer.parseInt(ted2.getText().toString());
-    	}
-    	catch (NumberFormatException nfe)
-    	{
-    		Context context = getApplicationContext();
-    		Toast.makeText(context, "Invalid Preparation Time", Toast.LENGTH_SHORT).show();
-    		return;
+    	if (isSmart)
+    	{   // Retrieve info from prep time fields
+    		EditText ted1 = (EditText) findViewById(R.id.hour_edittext);
+    		EditText ted2 = (EditText) findViewById(R.id.minute_edittext);
+    		try
+    		{
+    			phour = Integer.parseInt(ted1.getText().toString());
+    			pminute = Integer.parseInt(ted2.getText().toString());
+    		}
+    		catch (NumberFormatException nfe)
+    		{
+    			Context context = getApplicationContext();
+    			Toast.makeText(context, "Invalid Preparation Time", Toast.LENGTH_SHORT).show();
+    			return;
+    		}
     	}
     	
     	// Raw data
@@ -241,7 +251,7 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     		myAlarmDB.deleteAllAlarms();
     		for (String day : WEEK_DAYS)
     		{
-    			myAlarmDB.createAlarm(day, place, raw_prep, raw_alarm);
+    			myAlarmDB.createAlarm(day, place, raw_prep, raw_alarm, isSmart ? 0:1);
     		}
     		
     		Context context = getApplicationContext();
@@ -278,11 +288,11 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
 
     		if (id >= 0) // then update alarm
     		{
-    			myAlarmDB.editAlarm(id, WEEK_DAYS[curr_day], place, raw_prep, raw_alarm);
+    			myAlarmDB.editAlarm(id, WEEK_DAYS[curr_day], place, raw_prep, raw_alarm, isSmart ? 0:1);
     		}
     		else // create new alarm in database
     		{
-    			myAlarmDB.createAlarm(WEEK_DAYS[curr_day], place, raw_prep, raw_alarm);
+    			myAlarmDB.createAlarm(WEEK_DAYS[curr_day], place, raw_prep, raw_alarm, isSmart ? 0:1);
     		}
 
     		Context context = getApplicationContext();
@@ -324,7 +334,7 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
 	}
 	
 	@Override
-	public void onStop()
+	protected void onStop()
 	{
 		super.onStop();
 		myAlarmDB.close();
@@ -332,10 +342,10 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
 	}
 	
 	@Override
-	public void onResume()
+	protected void onResume()
 	{
 		super.onResume();
 		myAlarmDB.open();
-		myPlaceDB.open();
+		myPlaceDB.open();	
 	}
 }
