@@ -44,7 +44,7 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
         myAlarmDB = new AlarmDBManager(this);
         myAlarmDB.open();
         
-        // Open Route Database
+        // Open Place Database
         myPlaceDB = new PlaceDBManager(this);
         myPlaceDB.open();
 
@@ -61,7 +61,8 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
         //Populate Place spinner
         Spinner place_spinner = (Spinner) findViewById(R.id.place_spinner);
         place_spinner.setOnItemSelectedListener(this);
-        ArrayAdapter<String> place_adapter = new ArrayAdapter<String>(this, R.layout.place_spinner_row_entry, R.id.day, WEEK_DAYS);
+        ArrayAdapter<String> place_adapter = new ArrayAdapter<String>(this, R.layout.place_spinner_row_entry, R.id.place);
+        populatePlaceSpinner(place_adapter);
         place_spinner.setAdapter(place_adapter);
         
         
@@ -96,92 +97,136 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
 			
 		});
 	}
+    
+    private boolean isSmartView()
+    {
+    	RadioGroup alarm_type = (RadioGroup) findViewById(R.id.alarm_type_radiogroup);
+    	return R.id.alarm_type_smart == alarm_type.getCheckedRadioButtonId();
+    }
 
     
 	public void populateDumbAlarm(String selectedDay)
     {
     	int atime;
-    	try
+    	if (!isSmartView())
     	{
-    		Cursor alarmData = myDumbDB.getAlarm(selectedDay);
-    		
-    		if (alarmData.getColumnCount() > 2)
+    		try
     		{
-    			// Set Time Picker
-    			TimePicker timeSetter = (TimePicker) findViewById( R.id.wake_time_timepicker );
-    			atime = alarmData.getInt(2);
-    			timeSetter.setCurrentHour(atime / 100);
-    			timeSetter.setCurrentMinute(atime % 100);
+    			Cursor alarmData = myDumbDB.getAlarm(selectedDay);
 
+    			if (alarmData.getColumnCount() > 2)
+    			{
+    				// Set Time Picker
+    				TimePicker timeSetter = (TimePicker) findViewById( R.id.wake_time_timepicker );
+    				atime = alarmData.getInt(2);
+    				timeSetter.setCurrentHour(atime / 100);
+    				timeSetter.setCurrentMinute(atime % 100);
+
+    			}
+    			else
+    			{
+    				clearAlarmFields();
+    			}
+    			alarmData.close();
     		}
-    		else
+    		catch (SQLException squeak)
     		{
     			clearAlarmFields();
     		}
-    		alarmData.close();
-    	}
-    	catch (SQLException squeak)
-    	{
-    		clearAlarmFields();
-    	}
-    	catch (CursorIndexOutOfBoundsException cioobe)
-    	{
-    		clearAlarmFields();
-    	}
-    	catch (IllegalStateException ise)
-    	{ // database is most likely not open
-    		myDumbDB.open();
-    		populateDumbAlarm(selectedDay); // this is dangerous
+    		catch (CursorIndexOutOfBoundsException cioobe)
+    		{
+    			clearAlarmFields();
+    		}
+    		catch (IllegalStateException ise)
+    		{ // database is most likely not open
+    			myDumbDB.open();
+    			populateDumbAlarm(selectedDay); // this is dangerous
+    		}
     	}
     }
     
+	public void populatePlaceSpinner(ArrayAdapter<String> adap)
+	{
+		if (adap != null && adap.getCount() == 0)
+		{
+			try
+			{
+				Cursor places = myPlaceDB.getAllPlaceNames();
+				if (places != null && places.getCount() > 0)
+				{
+					for (int i = 0; i < places.getCount(); i++)
+					{
+						adap.add(places.getString(0));
+						places.moveToNext();
+					}
+				}
+				places.close();
+			}
+			catch (SQLException squeak)
+			{
+				Log.d("SmartAlarm", "Failed to populate place spinner");
+			}
+			catch (IllegalStateException ise)
+			{
+				myPlaceDB.open();
+				populatePlaceSpinner(adap);
+			}
+		}
+	}
 
 	public void populateAlarmFields(String selectedDay)
     {
     	int atime;
-    	try
+    	if (isSmartView())
     	{
-    		Cursor alarmData = myAlarmDB.getAlarm(selectedDay);
-    		
-    		if (alarmData.getColumnCount() > 4)
+    		try
     		{
-    			// Set Time Picker
-    			TimePicker timeSetter = (TimePicker) findViewById( R.id.place_time_timepicker );
-    			atime = alarmData.getInt(4);
-    			timeSetter.setCurrentHour(atime / 100);
-    			timeSetter.setCurrentMinute(atime % 100);
-    			
+    			Cursor alarmData = myAlarmDB.getAlarm(selectedDay);
 
-    			// Set prep time fields
-    			// hour
-    			EditText ted = (EditText) findViewById(R.id.hour_edittext);
-    			atime = alarmData.getInt(3);
-    			ted.setText(Integer.toString(atime / 60));
-    			// minute
-    			ted = (EditText) findViewById(R.id.minute_edittext);
-    			ted.setText(Integer.toString(atime % 60));
+    			if (alarmData.getColumnCount() > 4)
+    			{
+    				// Set PlaceSpinner
+    				String place = alarmData.getString(2);
+    				Spinner sp = (Spinner) findViewById(R.id.place_spinner);
+    				ArrayAdapter<String> adap = (ArrayAdapter<String>) sp.getAdapter();
+    				sp.setSelection(adap.getPosition(place));
+
+    				// Set Time Picker
+    				TimePicker timeSetter = (TimePicker) findViewById( R.id.place_time_timepicker );
+    				atime = alarmData.getInt(4);
+    				timeSetter.setCurrentHour(atime / 100);
+    				timeSetter.setCurrentMinute(atime % 100);
+
+
+    				// Set prep time fields
+    				// hour
+    				EditText ted = (EditText) findViewById(R.id.hour_edittext);
+    				atime = alarmData.getInt(3);
+    				ted.setText(Integer.toString(atime / 60));
+    				// minute
+    				ted = (EditText) findViewById(R.id.minute_edittext);
+    				ted.setText(Integer.toString(atime % 60));
+    			}
+    			else
+    			{
+    				clearAlarmFields();
+    			}
+    			alarmData.close();
     		}
-    		else
+    		catch (SQLException squeak)
     		{
     			clearAlarmFields();
     		}
-    		alarmData.close();
+    		catch (CursorIndexOutOfBoundsException cioobe)
+    		{
+    			clearAlarmFields();
+    		}
+    		catch (IllegalStateException ise)
+    		{ // database is most likely not open
+    			myAlarmDB.open();
+    			populateAlarmFields(selectedDay); // this is dangerous
+    		}
     	}
-    	catch (SQLException squeak)
-    	{
-    		clearAlarmFields();
-    	}
-    	catch (CursorIndexOutOfBoundsException cioobe)
-    	{
-    		clearAlarmFields();
-    	}
-    	catch (IllegalStateException ise)
-    	{ // database is most likely not open
-    		myAlarmDB.open();
-    		populateAlarmFields(selectedDay); // this is dangerous
-    	}
-
-    	
     }
     
     public void clearAlarmFields()
@@ -191,7 +236,9 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     	timeSetter.setCurrentMinute(0);
     	
     	EditText ted = (EditText) findViewById(R.id.hour_edittext);
+		ted.setText("");
 		ted = (EditText) findViewById(R.id.minute_edittext);
+		ted.setText("");
 		
 		CheckBox checky = (CheckBox) findViewById(R.id.alarm_everyday_checkbox);
 		checky.setChecked(false);
@@ -283,6 +330,9 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     	Spinner spinny = (Spinner) findViewById(R.id.day_spinner);
     	int curr_day = spinny.getLastVisiblePosition();
     	
+    	// Retrieve info from Place Spinner
+    	String place = (String) ((Spinner) findViewById(R.id.place_spinner)).getSelectedItem();
+    	
     	// Retrieve info from TimePicker
     	TimePicker timeSetter = (TimePicker) findViewById(R.id.place_time_timepicker);
     	int ahour = timeSetter.getCurrentHour();
@@ -316,7 +366,7 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     		myAlarmDB.deleteAllAlarms();
     		for (String day : WEEK_DAYS)
     		{
-    			myAlarmDB.createAlarm(day, "0", raw_prep, raw_alarm);
+    			myAlarmDB.createAlarm(day, place, raw_prep, raw_alarm);
     		}
     		
     		Context context = getApplicationContext();
@@ -353,11 +403,11 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
 
     		if (id >= 0) // then update alarm
     		{
-    			myAlarmDB.editAlarm(id, WEEK_DAYS[curr_day], "0", raw_prep, raw_alarm);
+    			myAlarmDB.editAlarm(id, WEEK_DAYS[curr_day], place, raw_prep, raw_alarm);
     		}
     		else // create new alarm in database
     		{
-    			myAlarmDB.createAlarm(WEEK_DAYS[curr_day], "0", raw_prep, raw_alarm);
+    			myAlarmDB.createAlarm(WEEK_DAYS[curr_day], place, raw_prep, raw_alarm);
     		}
 
     		Context context = getApplicationContext();
@@ -392,9 +442,11 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     public void onItemSelected(AdapterView<?> parent, View v, int position,
 			long id)
     {
-    	
-    	populateAlarmFields(WEEK_DAYS[position]);
-    	populateDumbAlarm(WEEK_DAYS[position]);
+    	if (parent.getId() == R.id.day_spinner)
+    	{
+    		populateAlarmFields(WEEK_DAYS[position]);
+    		populateDumbAlarm(WEEK_DAYS[position]);
+    	}
     }
     
     public void onNothingSelected(AdapterView<?> parent, View v, int position,
@@ -415,5 +467,14 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
 		myAlarmDB.close();
 		myPlaceDB.close();
 		myDumbDB.close();
+	}
+	
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		myAlarmDB.open();
+		myPlaceDB.open();
+		myDumbDB.open();
 	}
 }

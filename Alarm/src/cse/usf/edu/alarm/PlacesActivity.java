@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.AdapterView;
@@ -27,7 +29,7 @@ public class PlacesActivity extends Activity implements AdapterView.OnItemSelect
         //Populate place spinner
         Spinner spinner = (Spinner) findViewById(R.id.place_edit_spinner);
         spinner.setOnItemSelectedListener(this);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.place_spinner_row_entry, R.id.day );
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.place_spinner_row_entry, R.id.place );
         adapter.add("{New Place}");
         
         ArrayList<String> places = getAllPlaces();
@@ -45,12 +47,27 @@ public class PlacesActivity extends Activity implements AdapterView.OnItemSelect
     	String city = ((EditText) findViewById(R.id.city_edittext)).getText().toString();
     	String state = ((EditText) findViewById(R.id.state_edittext)).getText().toString();
     	String zip = ((EditText) findViewById(R.id.zip_edittext)).getText().toString();
-    					
-    	myPlaceDB.createPlace(name, street, city, state, zip);
+    	
+    	while (true)
+    	{
+    		try {
+    			myPlaceDB.createPlace(name, street, city, state, zip);
+    			break;
+    		}
+    		catch (SQLiteException squeak)
+    		{
+    			Log.d("SmartAlarm", "Failed to add place to database");
+    			return;
+    		}
+    		catch (IllegalStateException ise)
+    		{
+    			myPlaceDB.open();
+    		}
+    	}
     	
     	// update spinner
     	Spinner sp = (Spinner) findViewById(R.id.place_edit_spinner);
-    	ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.place_spinner_row_entry, R.id.day );
+    	ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.place_spinner_row_entry, R.id.place );
         adapter.add("{New Place}");
         ArrayList<String> places = getAllPlaces();
     	for (String p : places)
@@ -67,10 +84,25 @@ public class PlacesActivity extends Activity implements AdapterView.OnItemSelect
     	if (place == null) return;
     	
     	// remove from database
-    	myPlaceDB.deletePlace(place);
+    	while (true)
+    	{
+    		try {
+    			myPlaceDB.deletePlace(place);
+    			break;
+    		}
+    		catch (SQLiteException squeak)
+    		{
+    			Log.d("SmartAlarm", "Failed to remove place from database");
+    			return;
+    		}
+    		catch (IllegalStateException ise)
+    		{
+    			myPlaceDB.open();
+    		}
+    	}
     	
     	// clear it from the spinner
-    	ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.place_spinner_row_entry, R.id.day );
+    	ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.place_spinner_row_entry, R.id.place );
         adapter.add("{New Place}");
         ArrayList<String> places = getAllPlaces();
     	for (String p : places)
@@ -83,7 +115,23 @@ public class PlacesActivity extends Activity implements AdapterView.OnItemSelect
 
     public ArrayList<String> getAllPlaces()
     {
-    	Cursor places = myPlaceDB.getAllPlaceNames();
+    	Cursor places = null;
+    	while (true)
+    	{
+    		try {
+    			places = myPlaceDB.getAllPlaceNames();
+    			break;
+    		}
+    		catch (SQLiteException squeak)
+    		{
+    			Log.d("SmartAlarm", "Failed to remove place from database");
+    			return null;
+    		}
+    		catch (IllegalStateException ise)
+    		{
+    			myPlaceDB.open();
+    		}
+    	}
     	ArrayList<String> plist = new ArrayList<String>();
     	
         if (places != null && places.getCount() > 0)
@@ -93,6 +141,7 @@ public class PlacesActivity extends Activity implements AdapterView.OnItemSelect
         		plist.add(places.getString(0));
         		places.moveToNext();
         	}
+        	places.close();
         	return plist;
         }
         
@@ -124,7 +173,24 @@ public class PlacesActivity extends Activity implements AdapterView.OnItemSelect
 		}
 		else
 		{
-			Cursor mCursor = myPlaceDB.getPlace(place);
+			Cursor mCursor = null;
+			while (true)
+	    	{
+	    		try {
+	    			mCursor = myPlaceDB.getPlace(place);
+	    			break;
+	    		}
+	    		catch (SQLiteException squeak)
+	    		{
+	    			Log.d("SmartAlarm", "Failed to remove place from database");
+	    			return;
+	    		}
+	    		catch (IllegalStateException ise)
+	    		{
+	    			myPlaceDB.open();
+	    		}
+	    	}
+			
 			if (mCursor != null && mCursor.getColumnCount() == 6)
 			{
 				((EditText) findViewById(R.id.name_edittext))
@@ -137,7 +203,22 @@ public class PlacesActivity extends Activity implements AdapterView.OnItemSelect
 		    		.setText(mCursor.getString(4));
 		    	((EditText) findViewById(R.id.zip_edittext))
 		    		.setText(mCursor.getString(5));
+		    	mCursor.close();
 			}
 		}
+	}
+	
+	@Override
+	public void onStop()
+	{
+		super.onStop();
+		myPlaceDB.close();
+	}
+	
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		myPlaceDB.open();
 	}
 }
