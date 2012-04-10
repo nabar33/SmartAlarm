@@ -49,6 +49,7 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS places");
 		db.execSQL("DROP TABLE IF EXISTS dumbs");
 		onCreate(db);
+		
 	}
 
 }

@@ -59,6 +59,7 @@ public class DumbDBManager
 	public boolean deleteAllAlarms()
 	{
 		return database.delete("dumbs", null, null) > 0;
+		
 	}
 
 	public Cursor getAlarm(long alarmId) throws SQLException

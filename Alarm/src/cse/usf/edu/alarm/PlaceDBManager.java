@@ -64,6 +64,7 @@ public class PlaceDBManager {
 		if (mCursor != null)
 			mCursor.moveToFirst();
 		return mCursor;
+		
 	}
 	
 	public long createPlace(String name, String street, String city, String state, String zip)

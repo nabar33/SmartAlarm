@@ -45,6 +45,7 @@ public class AlarmDBManager
 	{
 		ContentValues values = buildAlarm(day, dest, prep_time, alarm_time);
 		return database.insert("alarms", null, values);
+		
 	}
 	
 	public long editAlarm(long alarmId, String day, String dest, int prep_time, int alarm_time)

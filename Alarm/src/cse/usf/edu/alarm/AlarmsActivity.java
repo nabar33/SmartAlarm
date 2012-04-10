@@ -150,6 +150,7 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     			atime = alarmData.getInt(4);
     			timeSetter.setCurrentHour(atime / 100);
     			timeSetter.setCurrentMinute(atime % 100);
+    			
 
     			// Set prep time fields
     			// hour

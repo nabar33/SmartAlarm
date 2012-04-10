@@ -34,6 +34,7 @@ public class PlacesActivity extends Activity implements AdapterView.OnItemSelect
         	{
         		adapter.add(places.getString(0));
         		places.moveToNext();
+        		
         	}
         }
         
