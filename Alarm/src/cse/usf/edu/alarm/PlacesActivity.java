@@ -17,8 +17,8 @@ public class PlacesActivity extends Activity implements AdapterView.OnItemSelect
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.places_tab_view);
         
-        this.myPlaceDB = new PlaceDBManager(this);
-        this.myPlaceDB.open();
+        myPlaceDB = new PlaceDBManager(this);
+        myPlaceDB.open();
         
 
         //Populate place spinner

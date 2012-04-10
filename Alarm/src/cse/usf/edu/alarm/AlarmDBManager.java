@@ -34,7 +34,11 @@ public class AlarmDBManager
 	{
 		ContentValues values = new ContentValues();
 		values.put("week_day", day);
+<<<<<<< HEAD
 		values.put("route_id", route);
+=======
+		values.put("place_id", dest);
+>>>>>>> 343563ba6f7eafae73ef3badbd9b748135d82cec
 		values.put("prep_time", prep_time);
 		values.put("alarm_time", alarm_time);
 		
@@ -78,6 +82,7 @@ public class AlarmDBManager
 						"week_day=\"" + day + "\"", null, null, null, null, null);
 		if (mCursor != null)
 			mCursor.moveToFirst();
+		
 		return mCursor;
 	}
 }

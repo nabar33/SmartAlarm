@@ -25,13 +25,7 @@
         <activity android:name="AlarmsActivity" />
         <activity android:name="PlacesActivity" />
         <activity android:name="StatusActivity" />
-        <activity
-            android:name="AddAlarmActivity"
-            android:theme="@android:style/Theme.NoTitleBar" />
-        <activity
-            android:name="AddPlaceActivity"
-            android:theme="@android:style/Theme.NoTitleBar" />
-        <service android:name="AlarmService"></service>
+        <service android:name="AlarmService" />
         <receiver android:name="BootBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

@@ -65,9 +65,8 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
         place_spinner.setAdapter(place_adapter);
         
         
-        
-        // Fill remaining fields
         populateAlarmFields(WEEK_DAYS[0]);
+
         
         //Set up radio buttons
         addRadioButtonListeners();
@@ -81,13 +80,17 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				RadioButton smart = (RadioButton) findViewById(R.id.alarm_type_smart);
 				
-				if(!(smart.getId()==checkedId)){
+				if(smart.getId()==checkedId){
+					//smart selected
 					findViewById(R.id.bottom_smart_layout).setVisibility(View.VISIBLE);
 					findViewById(R.id.bottom_standard_layout).setVisibility(View.INVISIBLE);
-					populateDumbAlarm(WEEK_DAYS[0]);
+					//populateAlarmFields(WEEK_DAYS[]);
+
 				}else{
+					//dumb selected
 					findViewById(R.id.bottom_smart_layout).setVisibility(View.INVISIBLE);
 					findViewById(R.id.bottom_standard_layout).setVisibility(View.VISIBLE);
+					//populateDumbAlarm(WEEK_DAYS[]);
 				}
 			}
 			
@@ -105,7 +108,7 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     		if (alarmData.getColumnCount() > 2)
     		{
     			// Set Time Picker
-    			TimePicker timeSetter = (TimePicker) findViewById( R.id.place_time_timepicker );
+    			TimePicker timeSetter = (TimePicker) findViewById( R.id.wake_time_timepicker );
     			atime = alarmData.getInt(2);
     			timeSetter.setCurrentHour(atime / 100);
     			timeSetter.setCurrentMinute(atime % 100);
@@ -176,6 +179,8 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     		myAlarmDB.open();
     		populateAlarmFields(selectedDay); // this is dangerous
     	}
+
+    	
     }
     
     public void clearAlarmFields()
@@ -191,6 +196,16 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
 		checky.setChecked(false);
     }
     
+    public void clearDumbAlarmFields()
+    {
+    	TimePicker timeSetter = (TimePicker) findViewById(R.id.wake_time_timepicker);
+    	timeSetter.setCurrentHour(12);
+    	timeSetter.setCurrentMinute(0);
+		
+		CheckBox checky = (CheckBox) findViewById(R.id.dumb_everyday_checkbox);
+		checky.setChecked(false);
+    }
+    
     public void addDumbAlarm(View v)
     {
     	
@@ -198,7 +213,7 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     	int curr_day = spinny.getLastVisiblePosition();
     	
     	// Retrieve info from TimePicker
-    	TimePicker timeSetter = (TimePicker) findViewById(R.id.place_time_timepicker);
+    	TimePicker timeSetter = (TimePicker) findViewById(R.id.wake_time_timepicker);
     	int ahour = timeSetter.getCurrentHour();
     	int aminute = timeSetter.getCurrentMinute();    	
     	
@@ -206,7 +221,7 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     	int raw_alarm = ahour * 100 + aminute;
 
     	/* Determine if Apply to All box is checked */
-    	CheckBox checky = (CheckBox) findViewById(R.id.alarm_everyday_checkbox);
+    	CheckBox checky = (CheckBox) findViewById(R.id.dumb_everyday_checkbox);
     	if (checky.isChecked()) // set alarm for all days
     	{
     		myDumbDB.deleteAllAlarms();
@@ -378,6 +393,7 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     {
     	
     	populateAlarmFields(WEEK_DAYS[position]);
+    	populateDumbAlarm(WEEK_DAYS[position]);
     }
     
     public void onNothingSelected(AdapterView<?> parent, View v, int position,
