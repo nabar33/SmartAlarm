@@ -3,14 +3,11 @@ package cse.usf.edu.alarm;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
-<<<<<<< HEAD
-=======
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
->>>>>>> d6a5fb1eb3d70395e7c3ccb031a83b838c4b2459
 
 public class PlacesActivity extends Activity implements AdapterView.OnItemSelectedListener {
     public PlaceDBManager myPlaceDB;
