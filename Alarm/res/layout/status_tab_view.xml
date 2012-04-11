@@ -14,7 +14,7 @@
         android:scaleType="fitCenter"
         android:src="@drawable/clock_face" />
         
-        -->
+
 
     <TextView
         android:id="@+id/time_to_next"
@@ -22,13 +22,24 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="center_horizontal"
-        android:text="--Time Until--"
+        android:text=""
         android:textAppearance="?android:attr/textAppearanceLarge" />
+    -->
 
     <AnalogClock
         android:id="@+id/analogClock1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/time_to_next" />
+
+    <DigitalClock
+        android:id="@+id/digitalClock1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="38dp"
+        android:text="DigitalClock"
+        android:textSize="30sp" />
 
 </RelativeLayout>
