@@ -87,11 +87,11 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
 
 				}else{
 					//dumb selected
-					findViewById(R.id.place_choice_textview).setVisibility(View.GONE);
-					findViewById(R.id.place_spinner).setVisibility(View.GONE);
-					findViewById(R.id.prep_time_textview).setVisibility(View.GONE);
-					findViewById(R.id.hour_edittext).setVisibility(View.GONE);
-					findViewById(R.id.minute_edittext).setVisibility(View.GONE);
+					findViewById(R.id.place_choice_textview).setVisibility(View.INVISIBLE);
+					findViewById(R.id.place_spinner).setVisibility(View.INVISIBLE);
+					findViewById(R.id.prep_time_textview).setVisibility(View.INVISIBLE);
+					findViewById(R.id.hour_edittext).setVisibility(View.INVISIBLE);
+					findViewById(R.id.minute_edittext).setVisibility(View.INVISIBLE);
 					((TextView)findViewById(R.id.place_time_textview)).setText("What time do you need to wake up?");
 				}
 			}

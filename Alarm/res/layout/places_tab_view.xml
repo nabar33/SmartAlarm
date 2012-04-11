@@ -73,7 +73,7 @@
             android:layout_margin="2dip"
             android:layout_toLeftOf="@+id/center"
             android:onClick="deletePlace"
-            android:text="Delete Place"
+            android:text="Delete"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
@@ -92,7 +92,7 @@
             android:layout_margin="2dip"
             android:layout_toRightOf="@+id/center"
             android:onClick="addPlace"
-            android:text="Save Place"
+            android:text="Save"
             android:textAppearance="?android:attr/textAppearanceLarge" />
     </RelativeLayout>
 

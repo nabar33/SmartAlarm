@@ -28,14 +28,12 @@ public class AlarmService extends Service {
 	private final static int GPS_UPDATE_INTERVAL = 1000 * 60;
 	private final static int GPS_UPDATE_DISTANCE = 100;
 	private AlarmDBManager alarmData;
-	private DumbDBManager dumbData;
 	private PlaceDBManager placeData;
 	LocationManager locationManager;
 	
 	public void onStartCommand()
 	{
 		alarmData.open();
-		dumbData.open();
 		placeData.open();
 		
 		LocationListener locationListener = new LocationListener() {
@@ -66,28 +64,7 @@ public class AlarmService extends Service {
 		
 
 		Cursor alarm = alarmData.getAlarm(dayOfTheWeek);
-		Cursor dumbAlarm = dumbData.getAlarm(dayOfTheWeek);
 		
-		int travelTime = getETA(location, alarm);
-		int prepTime = alarm.getInt(3);
-	    int destinationTime = alarm.getInt(4);
-	    
-	    int wakeTime = destinationTime - travelTime - prepTime;
-	    int dumbWakeTime = dumbAlarm.getInt(2);
-	    
-	    int currentTime = 60 * d.getHours() + d.getMinutes();
-	    
-	    int alarmTime = 1;
-	    
-	    if(wakeTime < dumbWakeTime)
-	    	alarmTime = currentTime - wakeTime;
-	    else
-	    	alarmTime = currentTime - dumbWakeTime;
-	    
-	    if(alarmTime <= 0)
-	    {
-	    	
-	    }
 	    
 	    //TODO send the alarmTime int for displaying time til next alarm
 	    // make this service check periodically for alarmTime <= 0 -> play sound
