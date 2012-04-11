@@ -216,7 +216,14 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     	
     	// Retrieve info from Place Spinner
     	if (isSmart)
+    	{
     		place = (String) ((Spinner) findViewById(R.id.place_spinner)).getSelectedItem();
+    		if (place == null)
+    		{
+    			Toast.makeText(this, "Please add a destination.", Toast.LENGTH_SHORT).show();
+    			return;
+    		}
+    	}
     	
     	// Retrieve info from TimePicker
     	TimePicker timeSetter = (TimePicker) findViewById(R.id.place_time_timepicker);
