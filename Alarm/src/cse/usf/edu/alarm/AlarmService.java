@@ -33,7 +33,7 @@ public class AlarmService extends Service {
 	private PlaceDBManager placeData;
 	LocationManager locationManager;
 	private int m_interval = 1000 * 60; 
-	private Handler m_handler;
+	private Handler m_handler = new Handler();
 	private int alarmTime;
 	
 	public void onStartCommand()
@@ -79,12 +79,14 @@ public class AlarmService extends Service {
 		travelTime = getETA(location, alarm);
 		prepTime = alarm.getInt(3);
 	    destinationTime = alarm.getInt(4);
+	    destinationTime = (destinationTime / 100) * 60 + (destinationTime % 100);
 	    
 	    wakeTime = destinationTime - travelTime - prepTime;
 	    
 	    } else {
 	    	//standard
 	    	wakeTime = alarm.getInt(4);
+	    	wakeTime = (wakeTime / 100) * 60 + (wakeTime % 100);
 	    }
 	    alarmTime = wakeTime - currentTime;
 	   
@@ -178,7 +180,7 @@ public class AlarmService extends Service {
 
 	private Runnable m_statusChecker = new Runnable() {
 		public void run() {
-			if(alarmTime <= 0)
+			if(alarmTime == 0)
 				ringAlarm();
 			
 			alarmTime--; 
