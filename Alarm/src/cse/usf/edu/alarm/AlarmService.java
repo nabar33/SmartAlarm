@@ -20,6 +20,7 @@ import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.widget.Toast;
@@ -58,13 +59,37 @@ public class AlarmService extends Service {
 	
 	public void updateAlarmTimes(Location location) throws Exception
 	{
+		int travelTime, prepTime, destinationTime, alarmTime, currentTime, wakeTime;
+		
 		SimpleDateFormat sdf = new SimpleDateFormat("E");
 		Date d = new Date();
 		String dayOfTheWeek = sdf.format(d);
-		
 
 		Cursor alarm = alarmData.getAlarm(dayOfTheWeek);
 		
+		currentTime = 60 * d.getHours() + d.getMinutes();
+		
+		if(alarm.getInt(5) == 0)
+		{
+			//smart
+		travelTime = getETA(location, alarm);
+		prepTime = alarm.getInt(3);
+	    destinationTime = alarm.getInt(4);
+	    
+	    wakeTime = destinationTime - travelTime - prepTime;
+	    
+	    } else {
+	    	//standard
+	    	wakeTime = alarm.getInt(4);
+	    }
+	    alarmTime = currentTime - wakeTime;
+	    
+	    if(alarmTime <= 0)
+	    {
+	    	MediaPlayer p = MediaPlayer.create(this, R.raw.alarmsound);
+	    	p.setLooping(false);
+	    	p.start();
+	    }
 	    
 	    //TODO send the alarmTime int for displaying time til next alarm
 	    // make this service check periodically for alarmTime <= 0 -> play sound
