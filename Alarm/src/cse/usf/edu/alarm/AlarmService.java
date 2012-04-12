@@ -20,7 +20,9 @@ import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.widget.Toast;
 
@@ -28,13 +30,15 @@ public class AlarmService extends Service {
 	private final static int GPS_UPDATE_INTERVAL = 1000 * 60;
 	private final static int GPS_UPDATE_DISTANCE = 100;
 	private AlarmDBManager alarmData;
-	private DumbDBManager dumbData;
 	private PlaceDBManager placeData;
 	LocationManager locationManager;
-
-	public void onStartCommand(){
+	private int m_interval = 1000 * 60; 
+	private Handler m_handler = new Handler();
+	private int alarmTime;
+	
+	public void onStartCommand()
+	{
 		alarmData.open();
-		dumbData.open();
 		placeData.open();
 		
 		LocationListener locationListener = new LocationListener() {
@@ -59,37 +63,40 @@ public class AlarmService extends Service {
 	
 	public void updateAlarmTimes(Location location) throws Exception
 	{
+		int travelTime, prepTime, destinationTime, currentTime, wakeTime;
+		
 		SimpleDateFormat sdf = new SimpleDateFormat("E");
 		Date d = new Date();
 		String dayOfTheWeek = sdf.format(d);
-		
 
 		Cursor alarm = alarmData.getAlarm(dayOfTheWeek);
-		Cursor dumbAlarm = dumbData.getAlarm(dayOfTheWeek);
 		
-		int travelTime = getETA(location, alarm);
-		int prepTime = alarm.getInt(3);
-	    int destinationTime = alarm.getInt(4);
+		currentTime = 60 * d.getHours() + d.getMinutes();
+		
+		if(alarm.getInt(5) == 0)
+		{
+			//smart
+			travelTime = getETA(location, alarm);
+			prepTime = alarm.getInt(3);
+			destinationTime = alarm.getInt(4);
+			destinationTime = (destinationTime / 100) * 60 + (destinationTime % 100);
+
+			wakeTime = destinationTime - travelTime - prepTime;
 	    
-	    int wakeTime = destinationTime - travelTime - prepTime;
-	    int dumbWakeTime = dumbAlarm.getInt(2);
-	    
-	    int currentTime = 60 * d.getHours() + d.getMinutes();
-	    
-	    int alarmTime = 1;
-	    
-	    if(wakeTime < dumbWakeTime)
-	    	alarmTime = currentTime - wakeTime;
-	    else
-	    	alarmTime = currentTime - dumbWakeTime;
-	    
-	    if(alarmTime <= 0)
-	    {
-	    	
+	    } else {
+	    	//standard
+	    	wakeTime = alarm.getInt(4);
+	    	wakeTime = (wakeTime / 100) * 60 + (wakeTime % 100);
 	    }
-	    
-	    //TODO send the alarmTime int for displaying time til next alarm
-	    // make this service check periodically for alarmTime <= 0 -> play sound
+	    alarmTime = wakeTime - currentTime;
+	    alarm.close();
+	}
+	
+	public void ringAlarm()
+	{
+		MediaPlayer p = MediaPlayer.create(this, R.raw.alarmsound);
+    	p.setLooping(false);
+    	p.start();
 	}
 	
 	public int getETA(Location location, Cursor alarm)
@@ -169,4 +176,28 @@ public class AlarmService extends Service {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+
+	private Runnable m_statusChecker = new Runnable() {
+		public void run() {
+			if(alarmTime == 0)
+				ringAlarm();
+			
+			alarmTime--; 
+			m_handler.postDelayed(m_statusChecker, m_interval);
+		}
+	};
+	
+	@Override
+	public void onCreate() {
+		m_handler.postDelayed(m_statusChecker, m_interval);
+    }
+
+	@Override
+	public void onDestroy() {
+        super.onDestroy();
+		m_handler.removeCallbacks(m_statusChecker);
+		alarmData.close();
+		placeData.close();
+    }
 }

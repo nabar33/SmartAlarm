@@ -39,6 +39,15 @@ public class PlaceDBManager {
 		return cv;
 	}
 	
+	public Cursor checkPlace(String name) throws SQLException
+	{
+		Cursor mCursor = database.query(true, "places", new String[] {"_id"},
+										"place_name=\"" + name + "\"", null, null, null, null, null);
+		if (mCursor != null)
+			mCursor.moveToFirst();
+		return mCursor;
+	}
+	
 	public Cursor getPlace(String name) throws SQLException
 	{
 		Cursor mCursor = database.query(true, "places", null, 
@@ -57,7 +66,7 @@ public class PlaceDBManager {
 		return mCursor;
 	}
 	
-	public Cursor getAllPlaceNames()
+	public Cursor getAllPlaceNames() throws SQLException
 	{
 		Cursor mCursor = database.query(true, "places", new String[] {"place_name"}, 
 										null, null, null, null, null, null);
