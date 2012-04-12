@@ -33,6 +33,8 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
 	public static final String[] WEEK_DAYS = 
 		{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 	
+	public static boolean dirty = false;
+	
 	// Handles to GUI elements
 	private Spinner daySpinner, placeSpinner;
 	
@@ -357,5 +359,13 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
 		super.onResume();
 		myAlarmDB.open();
 		myPlaceDB.open();	
+		if (dirty)
+		{
+			ArrayAdapter<String> place_adapter = new ArrayAdapter<String>(this, R.layout.place_spinner_row_entry, R.id.place);
+	        this.placeSpinner.setAdapter(place_adapter);
+	        
+	        populatePlaceSpinner(place_adapter);
+			dirty = false;
+		}
 	}
 }

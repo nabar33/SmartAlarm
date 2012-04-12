@@ -65,7 +65,10 @@ public class PlacesActivity extends Activity implements AdapterView.OnItemSelect
     	// check for empty fields
     	if (name.length() == 0 || street.length() == 0 || city.length() == 0
     		|| state.length() == 0 || zip.length() == 0)
+    	{
     		Toast.makeText(this, "Please fill in all fields.", Toast.LENGTH_SHORT).show();
+    		return;
+    	}
     		
     	while (true)
     	{
@@ -245,5 +248,6 @@ public class PlacesActivity extends Activity implements AdapterView.OnItemSelect
 	{
 		super.onResume();
 		myPlaceDB.open();
+		AlarmsActivity.dirty = true;
 	}
 }
