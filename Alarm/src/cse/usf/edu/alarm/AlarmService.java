@@ -76,12 +76,12 @@ public class AlarmService extends Service {
 		if(alarm.getInt(5) == 0)
 		{
 			//smart
-		travelTime = getETA(location, alarm);
-		prepTime = alarm.getInt(3);
-	    destinationTime = alarm.getInt(4);
-	    destinationTime = (destinationTime / 100) * 60 + (destinationTime % 100);
-	    
-	    wakeTime = destinationTime - travelTime - prepTime;
+			travelTime = getETA(location, alarm);
+			prepTime = alarm.getInt(3);
+			destinationTime = alarm.getInt(4);
+			destinationTime = (destinationTime / 100) * 60 + (destinationTime % 100);
+
+			wakeTime = destinationTime - travelTime - prepTime;
 	    
 	    } else {
 	    	//standard
@@ -89,7 +89,7 @@ public class AlarmService extends Service {
 	    	wakeTime = (wakeTime / 100) * 60 + (wakeTime % 100);
 	    }
 	    alarmTime = wakeTime - currentTime;
-	   
+	    alarm.close();
 	}
 	
 	public void ringAlarm()
@@ -197,5 +197,7 @@ public class AlarmService extends Service {
 	public void onDestroy() {
         super.onDestroy();
 		m_handler.removeCallbacks(m_statusChecker);
+		alarmData.close();
+		placeData.close();
     }
 }

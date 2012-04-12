@@ -62,7 +62,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/state_edittext"
             android:layout_margin="2dip"
-            android:hint="Zip Code" />
+            android:hint="Zip Code" 
+            android:inputType="number"/>
 
         <Button
             android:id="@+id/delete_place"

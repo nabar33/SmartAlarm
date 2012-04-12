@@ -28,10 +28,13 @@ import android.widget.Toast;
 
 public class AlarmsActivity extends Activity implements AdapterView.OnItemSelectedListener {
     
-	public AlarmDBManager myAlarmDB;
-	public PlaceDBManager myPlaceDB;
+	private AlarmDBManager myAlarmDB;
+	private PlaceDBManager myPlaceDB;
 	public static final String[] WEEK_DAYS = 
 		{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+	
+	// Handles to GUI elements
+	private Spinner daySpinner, placeSpinner;
 	
 	/** Called when the activity is first created. */
     @Override
@@ -46,18 +49,19 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
         // Open Place Database
         myPlaceDB = new PlaceDBManager(this);
         myPlaceDB.open();
+
+        this.daySpinner = (Spinner) findViewById(R.id.day_spinner);
+        this.placeSpinner = (Spinner) findViewById(R.id.place_spinner);
         
         // Populate Alarm spinner
-        Spinner day_spinner = (Spinner) findViewById(R.id.day_spinner);
-        day_spinner.setOnItemSelectedListener(this);
+        this.daySpinner.setOnItemSelectedListener(this);
         ArrayAdapter<String> day_adapter = new ArrayAdapter<String>(this, R.layout.day_spinner_row_entry, R.id.day, WEEK_DAYS);
-        day_spinner.setAdapter(day_adapter);
+        this.daySpinner.setAdapter(day_adapter);
         
         //Populate Place spinner
-        Spinner place_spinner = (Spinner) findViewById(R.id.place_spinner);
-        place_spinner.setOnItemSelectedListener(this);
+        this.placeSpinner.setOnItemSelectedListener(this);
         ArrayAdapter<String> place_adapter = new ArrayAdapter<String>(this, R.layout.place_spinner_row_entry, R.id.place);
-        place_spinner.setAdapter(place_adapter);
+        this.placeSpinner.setAdapter(place_adapter);
         
         populatePlaceSpinner(place_adapter);
         
@@ -85,7 +89,7 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
 					findViewById(R.id.minute_edittext).setVisibility(View.VISIBLE);
 					((TextView)findViewById(R.id.place_time_textview)).setText("When should you be there?");
 
-				}else{
+				} else {
 					//dumb selected
 					findViewById(R.id.place_choice_textview).setVisibility(View.GONE);
 					findViewById(R.id.place_spinner).setVisibility(View.GONE);
@@ -149,9 +153,8 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     			{
     				// Set PlaceSpinner
     				String place = alarmData.getString(2);
-    				Spinner sp = (Spinner) findViewById(R.id.place_spinner);
-    				ArrayAdapter<String> adap = (ArrayAdapter<String>) sp.getAdapter();
-    				sp.setSelection(adap.getPosition(place));
+    				ArrayAdapter<String> adap = (ArrayAdapter<String>) this.placeSpinner.getAdapter();
+    				this.placeSpinner.setSelection(adap.getPosition(place));
     				
     				// Set prep time fields
     				// hour
@@ -217,7 +220,7 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
     	// Retrieve info from Place Spinner
     	if (isSmart)
     	{
-    		place = (String) ((Spinner) findViewById(R.id.place_spinner)).getSelectedItem();
+    		place = (String) this.placeSpinner.getSelectedItem();
     		if (place == null)
     		{
     			Toast.makeText(this, "Please add a destination.", Toast.LENGTH_SHORT).show();
@@ -341,9 +344,9 @@ public class AlarmsActivity extends Activity implements AdapterView.OnItemSelect
 	}
 	
 	@Override
-	protected void onStop()
+	protected void onPause()
 	{
-		super.onStop();
+		super.onPause();
 		myAlarmDB.close();
 		myPlaceDB.close();
 	}
