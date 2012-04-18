@@ -27,41 +27,21 @@ import android.os.IBinder;
 import android.widget.Toast;
 
 public class AlarmService extends Service {
-	private final static int GPS_UPDATE_INTERVAL = 1000 * 60;
-	private final static int GPS_UPDATE_DISTANCE = 100;
-	private AlarmDBManager alarmData;
-	private PlaceDBManager placeData;
+	private final static int GPS_UPDATE_INTERVAL = 1000 * 10;
+	private final static int GPS_UPDATE_DISTANCE = 50;
+	private AlarmDBManager alarmData = new AlarmDBManager(this);
+	private PlaceDBManager placeData = new PlaceDBManager(this);
 	LocationManager locationManager;
 	private int m_interval = 1000 * 60; 
 	private Handler m_handler = new Handler();
-	private int alarmTime;
+	private int alarmTime = -1;
 	
 	public void onStartCommand()
 	{
-		alarmData.open();
-		placeData.open();
 		
-		LocationListener locationListener = new LocationListener() {
-				public void onLocationChanged(Location location) {
-					// Called when a new location is found by the network location
-					// provider.
-					try {
-						updateAlarmTimes(location);
-					} catch (Exception e) {
-						Toast.makeText(null, "Oh Lawd..", Toast.LENGTH_LONG);
-					}
-				}
-				public void onStatusChanged(String provider, int status, Bundle extras) {}
-				public void onProviderEnabled(String provider) {}
-				public void onProviderDisabled(String provider) {}
-			};
-			
-		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-			
-		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, GPS_UPDATE_INTERVAL, GPS_UPDATE_DISTANCE, locationListener);
 	}
 	
-	public void updateAlarmTimes(Location location) throws Exception
+	public void updateAlarmTime(Location location) throws Exception
 	{
 		int travelTime, prepTime, destinationTime, currentTime, wakeTime;
 		
@@ -77,6 +57,7 @@ public class AlarmService extends Service {
 		{
 			//smart
 			travelTime = getETA(location, alarm);
+			travelTime /= 60;
 			prepTime = alarm.getInt(3);
 			destinationTime = alarm.getInt(4);
 			destinationTime = (destinationTime / 100) * 60 + (destinationTime % 100);
@@ -179,7 +160,13 @@ public class AlarmService extends Service {
 	
 
 	private Runnable m_statusChecker = new Runnable() {
-		public void run() {
+		public void run() {		
+			Location loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+			if(loc != null)
+				try{
+					updateAlarmTime(loc);
+				} catch (Exception e) {}
+			
 			if(alarmTime == 0)
 				ringAlarm();
 			
@@ -190,6 +177,27 @@ public class AlarmService extends Service {
 	
 	@Override
 	public void onCreate() {
+		alarmData.open();
+		placeData.open();
+		
+		LocationListener locationListener = new LocationListener() {
+				public void onLocationChanged(Location location) {
+					// Called when a new location is found by the network location
+					// provider.
+					/*
+					try{
+						updateAlarmTime(location);
+					}catch(Exception e) {}
+					*/
+				}
+				public void onStatusChanged(String provider, int status, Bundle extras) {}
+				public void onProviderEnabled(String provider) {}
+				public void onProviderDisabled(String provider) {}
+			};
+			
+		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, GPS_UPDATE_INTERVAL, GPS_UPDATE_DISTANCE, locationListener);
+		
 		m_handler.postDelayed(m_statusChecker, m_interval);
     }
 
