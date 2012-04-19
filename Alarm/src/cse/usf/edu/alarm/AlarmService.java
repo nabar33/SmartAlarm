@@ -35,43 +35,9 @@ public class AlarmService extends Service {
 	private int m_interval = 1000 * 60; 
 	private Handler m_handler = new Handler();
 	private int alarmTime = -1;
+	private int currentTime;
 	
-	public void onStartCommand()
-	{
-		
-	}
-	
-	public void updateAlarmTime(Location location) throws Exception
-	{
-		int travelTime, prepTime, destinationTime, currentTime, wakeTime;
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("E");
-		Date d = new Date();
-		String dayOfTheWeek = sdf.format(d);
-
-		Cursor alarm = alarmData.getAlarm(dayOfTheWeek);
-		
-		currentTime = 60 * d.getHours() + d.getMinutes();
-		
-		if(alarm.getInt(5) == 0)
-		{
-			//smart
-			travelTime = getETA(location, alarm);
-			travelTime /= 60;
-			prepTime = alarm.getInt(3);
-			destinationTime = alarm.getInt(4);
-			destinationTime = (destinationTime / 100) * 60 + (destinationTime % 100);
-
-			wakeTime = destinationTime - travelTime - prepTime;
-	    
-	    } else {
-	    	//standard
-	    	wakeTime = alarm.getInt(4);
-	    	wakeTime = (wakeTime / 100) * 60 + (wakeTime % 100);
-	    }
-	    alarmTime = wakeTime - currentTime;
-	    alarm.close();
-	}
+	public void onStartCommand() {}	
 	
 	public void ringAlarm()
 	{
@@ -154,18 +120,32 @@ public class AlarmService extends Service {
 
 	@Override
 	public IBinder onBind(Intent intent) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
 
 	private Runnable m_statusChecker = new Runnable() {
-		public void run() {		
-			Location loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-			if(loc != null)
-				try{
-					updateAlarmTime(loc);
-				} catch (Exception e) {}
+		public void run() {
+			SimpleDateFormat sdf = new SimpleDateFormat("E");
+			Date d = new Date();
+			String dayOfTheWeek = sdf.format(d);
+
+			Cursor alarm = alarmData.getAlarm(dayOfTheWeek);
+			currentTime = 60 * d.getHours() + d.getMinutes();
+			
+			if(alarm.getInt(5) == 0){				
+				Location loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+				if(loc != null)
+					try{
+						updateAlarmTime(dayOfTheWeek, currentTime, loc);
+					} catch (Exception e) {}
+				else
+					Toast.makeText(getApplicationContext(), "Failed to find location", Toast.LENGTH_SHORT);
+			}else
+				updateAlarmTime(dayOfTheWeek, currentTime);
+			
+			alarm.close();
 			
 			if(alarmTime == 0)
 				ringAlarm();
@@ -200,6 +180,32 @@ public class AlarmService extends Service {
 		
 		m_handler.postDelayed(m_statusChecker, m_interval);
     }
+
+	protected void updateAlarmTime(String dayOfTheWeek, int currentTime, Location loc) {
+		Cursor alarm = alarmData.getAlarm(dayOfTheWeek);
+		int travelTime, prepTime, destinationTime, wakeTime;
+		
+		travelTime = getETA(loc, alarm);
+		travelTime /= 60;
+		prepTime = alarm.getInt(3);
+		destinationTime = alarm.getInt(4);
+		destinationTime = (destinationTime / 100) * 60 + (destinationTime % 100);
+		
+		wakeTime = destinationTime - travelTime - prepTime;
+		
+		alarmTime = wakeTime - currentTime;
+	    alarm.close();
+	}
+
+	protected void updateAlarmTime(String dayOfTheWeek, int currentTime) {
+		Cursor alarm = alarmData.getAlarm(dayOfTheWeek);
+		int wakeTime;
+		
+		wakeTime = alarm.getInt(4);
+    	wakeTime = (wakeTime / 100) * 60 + (wakeTime % 100);
+    	alarmTime = wakeTime - currentTime;
+    	alarm.close();
+	}
 
 	@Override
 	public void onDestroy() {
