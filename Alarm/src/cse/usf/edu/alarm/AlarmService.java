@@ -27,8 +27,8 @@ import android.os.IBinder;
 import android.widget.Toast;
 
 public class AlarmService extends Service {
-	private final static int GPS_UPDATE_INTERVAL = 1000 * 10;
-	private final static int GPS_UPDATE_DISTANCE = 50;
+	private final static int UPDATE_INTERVAL = 1000 * 60;
+	private final static int UPDATE_DISTANCE = 50;
 	private AlarmDBManager alarmData = new AlarmDBManager(this);
 	private PlaceDBManager placeData = new PlaceDBManager(this);
 	LocationManager locationManager;
@@ -46,7 +46,7 @@ public class AlarmService extends Service {
     	p.start();
 	}
 	
-	public int getETA(Location location, Cursor alarm)
+	public int getETA(Location location, Cursor place)
 	{
 		int travelTime = 0;
 		Double latitude = location.getLatitude();
@@ -54,10 +54,10 @@ public class AlarmService extends Service {
 
 		StringBuilder urlString = new StringBuilder();
 		
-		String street = alarm.getString(1);
-		String city = alarm.getString(2);
-		String state = alarm.getString(3);
-		String zip = alarm.getString(4);	
+		String street = place.getString(1);
+		String city = place.getString(2);
+		String state = place.getString(3);
+		String zip = place.getString(4);	
 		
 		street.replace(' ', '+');
 		city.replace(' ', '+');
@@ -132,25 +132,31 @@ public class AlarmService extends Service {
 
 			Cursor alarm = alarmData.getAlarm(dayOfTheWeek);
 			currentTime = 60 * d.getHours() + d.getMinutes();
-			
-			if(alarm.getInt(5) == 0){				
-				Location loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-				if(loc != null)
-					try{
-						updateAlarmTime(dayOfTheWeek, currentTime, loc);
-					} catch (Exception e) {}
-				else
-					Toast.makeText(getApplicationContext(), "Failed to find location", Toast.LENGTH_SHORT);
-			}else
-				updateAlarmTime(dayOfTheWeek, currentTime);
+			try {
+				if (alarm.getInt(5) == 0) {
+					Location loc = locationManager
+							.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+					if (loc != null)
+						try {
+							updateAlarmTime(dayOfTheWeek, currentTime, loc);
+						} catch (Exception e) {
+						}
+					else
+						Toast.makeText(getApplicationContext(),
+								"Failed to find location", Toast.LENGTH_SHORT);
+				} else
+					updateAlarmTime(dayOfTheWeek, currentTime);
+
+				alarm.close();
+
+				if (alarmTime == 0)
+					ringAlarm();
+
+				alarmTime--;
+			} catch (Exception e) {}
 			
-			alarm.close();
-			
-			if(alarmTime == 0)
-				ringAlarm();
-			
-			alarmTime--; 
 			m_handler.postDelayed(m_statusChecker, m_interval);
 		}
 	};
@@ -162,13 +168,14 @@ public class AlarmService extends Service {
 		
 		LocationListener locationListener = new LocationListener() {
 				public void onLocationChanged(Location location) {
-					// Called when a new location is found by the network location
-					// provider.
-					/*
-					try{
-						updateAlarmTime(location);
-					}catch(Exception e) {}
-					*/
+					SimpleDateFormat sdf = new SimpleDateFormat("E");
+					Date d = new Date();
+					String dayOfTheWeek = sdf.format(d);
+
+					currentTime = 60 * d.getHours() + d.getMinutes();
+					
+					updateAlarmTime(dayOfTheWeek, currentTime, location);
+					
 				}
 				public void onStatusChanged(String provider, int status, Bundle extras) {}
 				public void onProviderEnabled(String provider) {}
@@ -176,16 +183,17 @@ public class AlarmService extends Service {
 			};
 			
 		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, GPS_UPDATE_INTERVAL, GPS_UPDATE_DISTANCE, locationListener);
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, UPDATE_INTERVAL, UPDATE_DISTANCE, locationListener);
 		
 		m_handler.postDelayed(m_statusChecker, m_interval);
     }
 
 	protected void updateAlarmTime(String dayOfTheWeek, int currentTime, Location loc) {
 		Cursor alarm = alarmData.getAlarm(dayOfTheWeek);
+		Cursor place = placeData.getPlace(alarm.getString(2));
 		int travelTime, prepTime, destinationTime, wakeTime;
 		
-		travelTime = getETA(loc, alarm);
+		travelTime = getETA(loc, place);
 		travelTime /= 60;
 		prepTime = alarm.getInt(3);
 		destinationTime = alarm.getInt(4);
@@ -201,10 +209,12 @@ public class AlarmService extends Service {
 		Cursor alarm = alarmData.getAlarm(dayOfTheWeek);
 		int wakeTime;
 		
-		wakeTime = alarm.getInt(4);
-    	wakeTime = (wakeTime / 100) * 60 + (wakeTime % 100);
-    	alarmTime = wakeTime - currentTime;
-    	alarm.close();
+		if (alarm != null) {
+			wakeTime = alarm.getInt(4);
+			wakeTime = (wakeTime / 100) * 60 + (wakeTime % 100);
+			alarmTime = wakeTime - currentTime;
+			alarm.close();
+		}
 	}
 
 	@Override
